@@ -5,6 +5,11 @@
     /// </summary>
     public class TypeBateau
     {
+        public TypeBateau()
+        {
+            NomModele = "";
+            Taille = 0;
+        }
         public TypeBateau(string nom, int taille)
         {
             NomModele = nom;

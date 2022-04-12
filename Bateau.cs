@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale
 {
+    /// <summary>
+    /// Encapsule l'état du bateau (intact, touché et coulé
+    /// </summary>
+    enum EtatBateau
+    {
+        BATEAU_INTACT,
+        BATEAU_TOUCHE,
+        BATEAU_COULE,
+        BATEAU_NBRE_ETATS
+    }
     internal class Bateau
     {
         /// <summary>
@@ -22,6 +32,10 @@ namespace BatailleNavale
             CoordDepart = cd;
             NombreBateaux++;
         }
+        /// <summary>
+        /// Description des états des tableaux par un tableai dont l'index doit être EtatBateau
+        /// </summary>
+        public readonly static string[] DescriptionEtatBateau = { "intact", "touché", "coulé" };
         /// <summary>
         /// Nombre total de bateaux ayant été créés dans le jeu
         /// </summary>
@@ -47,14 +61,31 @@ namespace BatailleNavale
         /// </summary>
         public Coordonnee? CoordDepart { get; set; }
         /// <summary>
+        /// Etat du bateau
+        /// (EtatBateau.BATEAU_COULE s'il a coulé, EtatBateau.BATEAU_TOUCHE s'il a été touché et EtatBateau.BATEAU_INTACT s'il est intact)
+        /// </summary>
+        public EtatBateau EtatBateau { get; set; } = EtatBateau.BATEAU_INTACT;
+        /// <summary>
         /// Vérifie si le bateau n'a pas coulé
         /// </summary>
         /// <returns>
-        /// true si vivant, false autrement
+        /// false s'il a coulé, true sinon
         /// </returns>
         public bool IsAlive()
         {
-            return PointsDeVie != 0;
+            return EtatBateau != EtatBateau.BATEAU_COULE;
+        }
+        /// <summary>
+        /// Indique que le navire à été touché
+        /// </summary>
+        public void EstAttaque()
+        {
+            if (PointsDeVie > 0)
+            {
+                PointsDeVie--;
+
+                EtatBateau = (PointsDeVie > 0) ? EtatBateau.BATEAU_TOUCHE : EtatBateau.BATEAU_COULE;
+            }
         }
     }
 
@@ -63,21 +94,29 @@ namespace BatailleNavale
     /// </summary>
     public class Coordonnee
     {
+        /// <summary>
+        /// Constructeur de la classe
+        /// </summary>
         public Coordonnee()
         {
             x = 0;y = 0;
         }
-        Coordonnee(int _x,int _y)
+        /// <summary>
+        /// Constructeur de la classe
+        /// </summary>
+        /// <param name="_x">Abscisse</param>
+        /// <param name="_y">Ordonnée</param>
+        public Coordonnee(int _x,int _y)
         {
             x = _x;y = _y;
         }
         /// <summary>
         /// Abscisse
         /// </summary>
-        int x { get; set; }
+        public int x { get; set; }
         /// <summary>
         /// Ordonnée
         /// </summary>
-        int y { get; set; }
+        public int y { get; set; }
     }
 }

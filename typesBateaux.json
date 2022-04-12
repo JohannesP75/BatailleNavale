@@ -1,0 +1,7 @@
+[
+  { "NomModele": "Porte-avion", "Taille": 5},
+  { "NomModele": "Croiseur", "Taille": 4},
+  { "NomModele": "Frégate", "Taille": 3},
+  { "NomModele": "Sous-marin", "Taille": 3},
+  { "NomModele": "Escorteur", "Taille": 2}
+]
