@@ -1,27 +1,81 @@
-﻿namespace BatailleNavale;
+﻿// Test affichage
+/*
+namespace BatailleNavale;
 
-class main
+/*class Program
 {
-    int[,] GrilleIdBateau=new int[8, 8];
-    char[,] GrilleEtatBateau=new char[8, 8];
-    LaGrille CetteGrille = new();
-    GrilleIdBateau, GrilleEtatBateau = CetteGrille.Genere();
-    Affichage.grille();
+    static void Main()
+    {
+        public LaGrille cetteGrille { get; set; } = new();
+        cetteGrille.Genere();
+        Affichage.grille(cetteGrille);
+    }
 }
 
-public class Affichage
+class Affichage
+{
+    public Affichage() // pas utile
+    {
+    }
+    public void grille(LaGrille laGrille)
+    {
+        Console.Clear();
+        for (int Line = 1; Line < 9; Line++)
+        {
+            for (int Col = 1; Col < 9; Col++)
+            {
+                Console.Write(${ laGrille.lesCases[Col, Line].état, 2});
+    }
+    Console.WriteLine();
+        }
+
+    }
+}
+class LaGrille
+{
+    public Cases[,]? lesCases { get; set; }
+    public LaGrille
+        {
+         = new Cases[8, 8];
+
+    public void Genere()
+    {
+        for (int Line = 1; Line < 9; Line++)
+        {
+            for (int Col = 1; Col < 9; Col++)
+            {
+                lesCases[Col, Line].état = (char)(32 + Line + Col);
+                lesCases[Col, Line].identifiant = 0;
+            }
+        }
+    }
+} 
+
+class Cases
+{
+    int[8, 8] GrilleIdBâteau;
+    char[8, 8] GrilleEtatBâteau;
+    LaGrille CetteGrille = new();
+    GrilleIdBâteau, GrilleEtatBâteau = CetteGrille.Génère();
+    Affichage.grille();
+}*/
+
+// Test affichage
+namespace BatailleNavale;
+
+class Program
 {
 	public Affichage() // pas utile
 	{
 	}
-	public void grille(int[,] IdBateau, int QuelJoueur)
+	public void grille(int[,] IdBâteau, int QuelJoueur)
     {
         Console.Clear();
-		for (int Line = 1; Line < 9; Line++)
+        for (int Line = 1; Line < 9; Line++)
         {
-			for (int Col = 1; Col < 9; Col++)
+            for (int Col = 1; Col < 9; Col++)
             {
-                Console.Write(${ GrilleEtatBateau[Col,Line], 2});
+                Console.Write(${ GrilleEtatBâteau[Col,Line], 2});
             }
             Console.WriteLine();
         }
@@ -30,21 +84,21 @@ public class Affichage
 }
 public class LaGrille
 {
-    static int[,] IdBateau { get; set; } = new int[8, 8]; // ref bâteau ou 0 par défaut
-    static char[,] EtatBateau { get; set; } = new char[8, 8];// (I)ntact (V)ide (C)oulé
+    static int[,] IdBâteau { get; set; } = new() int[8, 8]; // ref bâteau ou 0 par défaut
+    static char[,] EtatBâteau { get; set; } = new() char[8, 8];// (I)ntact (V)ide (C)oulé
 
-    public static LaGrille Genere()
+    public static LaGrille Génère()
     {
         for (int Line = 1; Line < 9; Line++)
         {
             for (int Col = 1; Col < 9; Col++)
             {
-                EtatBateau[Col, Line] = (char)(32 + Line + Col);
-                IdBateau[Col, Line] = 0;
+                EtatBâteau[Col, Line] = 32 + Line + Col;
+                IdBâteau[Col, Line] = 0;
             }
         }
-        
-        return EtatBateau, IdBateau;
+        Return EtatBâteau, IdBâteau;
     }
 }
 
+*/
