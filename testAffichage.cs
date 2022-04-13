@@ -2,10 +2,10 @@
 
 class main
 {
-    int[8, 8] GrilleIdBâteau;
-    char[8, 8] GrilleEtatBâteau;
+    int[,] GrilleIdBateau=new int[8, 8];
+    char[,] GrilleEtatBateau=new char[8, 8];
     LaGrille CetteGrille = new();
-    GrilleIdBâteau, GrilleEtatBâteau = CetteGrille.Génère();
+    GrilleIdBateau, GrilleEtatBateau = CetteGrille.Genere();
     Affichage.grille();
 }
 
@@ -14,14 +14,14 @@ public class Affichage
 	public Affichage() // pas utile
 	{
 	}
-	public void grille(int[,] IdBâteau, int QuelJoueur)
+	public void grille(int[,] IdBateau, int QuelJoueur)
     {
         Console.Clear();
 		for (int Line = 1; Line < 9; Line++)
         {
 			for (int Col = 1; Col < 9; Col++)
             {
-                Console.Write(${ GrilleEtatBâteau[Col,Line], 2});
+                Console.Write(${ GrilleEtatBateau[Col,Line], 2});
             }
             Console.WriteLine();
         }
@@ -30,20 +30,21 @@ public class Affichage
 }
 public class LaGrille
 {
-    static int[,] IdBâteau { get; set; } = new() int[8, 8]; // ref bâteau ou 0 par défaut
-    static char[,] EtatBâteau { get; set; } = new() char[8, 8];// (I)ntact (V)ide (C)oulé
+    static int[,] IdBateau { get; set; } = new int[8, 8]; // ref bâteau ou 0 par défaut
+    static char[,] EtatBateau { get; set; } = new char[8, 8];// (I)ntact (V)ide (C)oulé
 
-    public static LaGrille Génère()
+    public static LaGrille Genere()
     {
         for (int Line = 1; Line < 9; Line++)
         {
             for (int Col = 1; Col < 9; Col++)
             {
-                EtatBâteau[Col, Line] = 32 + Line + Col;
-                IdBâteau[Col, Line] = 0;
+                EtatBateau[Col, Line] = (char)(32 + Line + Col);
+                IdBateau[Col, Line] = 0;
             }
         }
-        Return EtatBâteau, IdBâteau;
+        
+        return EtatBateau, IdBateau;
     }
 }
 
