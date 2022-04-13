@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Encapsule l'état du bateau (intact, touché et coulé
+/// Encapsule l'état du bateau (intact, touché et coulé)
 /// </summary>
 public enum ShipState
 {

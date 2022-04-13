@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale
 {
+    enum EtatCase{
+        CASE_LIBRE_INTACTE,
+        CASE_LIBRE_TOUCHEE,
+        CASE_OCCUPEE_INTACTE,
+        CASE_OCCUPEE_TOUCHEE
+    }
+
     public class Cell
     {
+        public static readonly char[] ImageCase = new char[] { '.', ':', '#', '8' };
         public Point PointCoordinate { get; set; }
 
         /// <summary>
@@ -30,17 +38,40 @@ namespace BatailleNavale
         /// </summary>
         public bool IsBlowed { get; set; }
 
+        /// <summary>
+        /// Constructeur par défaut de la classe
+        /// </summary>
         public Cell()
+        {
+            InitCell(new Point(0, 0));
+        }
+
+        /// <summary>
+        /// Constructeur de la classe intégrant sa position
+        /// </summary>
+        /// <param name="x">Absisse</param>
+        /// <param name="y">Ordonnée</param>
+        public Cell(int x, int y)
+        {
+            InitCell(new Point(x, y));
+        }
+        /// <summary>
+        /// Constructeur de la classe
+        /// </summary>
+        /// <param name="p">Coordonnées de la classe</param>
+        public Cell(Point p)
+        {
+            InitCell(p);
+        }
+
+        private void InitCell(Point p)
         {
             IsOccupied = false;
             IsTouched = false;
             IsMisHit = false;
             IsBlowed = false;
-            PointCoordinate = new Point(0,0);
-         
+            PointCoordinate = p;
         }
-
-
         public void CellState()
         {
             if (IsTouched & IsOccupied)
@@ -52,6 +83,10 @@ namespace BatailleNavale
                 IsMisHit = true;
             }
         }
+        /// <summary>
+        /// Décrit l'état de la case
+        /// </summary>
+        EtatCase EtatCase { get; set; }
 
     }
 }

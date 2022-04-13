@@ -9,22 +9,39 @@ namespace BatailleNavale
 {
     public class Grid
     {
-        public int size { get; set; } = 10;
-        public List<List<Cell>> matrix;
+        /// <summary>
+        /// Taille du tableau
+        /// </summary>
+        public int size { get; init; }
+        /// <summary>
+        /// Tableau en 2D représentant les cases du tableau
+        /// </summary>
+        public List<List<Cell>>? matrix;
 
-        public Grid()
-        {
- 
-
+        /// <summary>
+        /// Constructeur de la classe utilisant la valeur standard de size
+        /// </summary>
+        public Grid(){
+            InitGrid(size);
         }
-
+        /// <summary>
+        /// Constructeur de la classe
+        /// </summary>
+        /// <param name="s">Taille de la carte (longeur et largeur)</param>
+        public Grid(int s){
+            InitGrid(s);
+        }
+        /// <summary>
+        /// Initialise la grille
+        /// </summary>
+        /// <param name="size">Taille de la carte (longeur et largeur)</param>
         public void InitGrid(int size)
         {
              matrix = new List<List<Cell>>();
 
             for (int x = 0; x < size; x++)
             {
-                matrix.Add(new List<Cell>(10));
+                matrix.Add(new List<Cell>(size));
 
 
                 Console.WriteLine();

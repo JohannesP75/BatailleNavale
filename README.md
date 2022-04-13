@@ -61,3 +61,9 @@ Gère l'état d'un bâteau
 - positions mémorisées ? (peut-être que l'info dans la grille est suffisant)
 - état pour chaque position (intact, touché)
 - état global (coulé: compteur = longueur puis décrémente si touché)
+
+* classe affichage
+- [~] = eau inexplorée (bleu)
+- [x] = exploré touché (rouge)
+- [?] = exploré mais manqué (blanc)
+- [O] = Mes bateaux (vert)
