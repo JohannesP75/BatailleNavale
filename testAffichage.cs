@@ -48,3 +48,4 @@ internal class Case
     public char état; // (I)ntact (V)ide (C)oulé
 }
 
+*/
