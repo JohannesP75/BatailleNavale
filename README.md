@@ -1,63 +1,69 @@
 # BatailleNavale
 Jeu de bataille navale
 
-On considère 5 types de navires:
+On considÃ¨re 5 types de navires:
 - porte avion long=5
 - croiseur long=4
-- frégate long=3
+- frÃ©gate long=3
 - sous-marin long=3
 - escorteur long=2 (x2)
 
 La grille fait 8x8.
 
-Chaque navire est positionné par un point de départ D(x,y) et un point d'arrivée A(x,y).
+Chaque navire est positionnÃ© par un point de dÃ©part D(x,y) et un point d'arrivÃ©e A(x,y).
 
-Le joueur distant est identifié par un nom de machine sur le réseau.
-A l'initialisation, le premier joueur envoyant une commande donne automatiquement la main (jeton) à l'autre joueur.
+Le joueur distant est identifiÃ© par un nom de machine sur le rÃ©seau.
+A l'initialisation, le premier joueur envoyant une commande donne automatiquement la main (jeton) Ã  l'autre joueur.
 
 Fonctionnement:
-LE joueur débute la partie 
-La liaison doit être vérifiée avant d'accepter l'envoi de chaque 'coup'.
-Un coup doit être vérifié avant d'être émis:
-- pas de rejeu (en option, on peut ultérieurement accepter un coup déjà joué)
+LE joueur dÃ©bute la partie 
+La liaison doit Ãªtre vÃ©rifiÃ©e avant d'accepter l'envoi de chaque 'coup'.
+Un coup doit Ãªtre vÃ©rifiÃ© avant d'Ãªtre Ã©mis:
+- pas de rejeu (en option, on peut ultÃ©rieurement accepter un coup dÃ©jÃ  jouÃ©)
 - dans la grille (0<x<9, 0<y<9)
-Un message retour informe le joueur que la commande est bien passée et précise le résultat du coup:
+Un message retour informe le joueur que la commande est bien passÃ©e et prÃ©cise le rÃ©sultat du coup:
 - dans l'eau
-- touché
--coulé (avec le type de bâteau)
-- fin de partie (tous bâteaux coulés)
+- touchÃ©
+-coulÃ© (avec le type de bÃ¢teau)
+- fin de partie (tous bÃ¢teaux coulÃ©s)
 
 Structure:
 * classe connexion
-Gère l'état de la liaison:
+GÃ¨re l'Ã©tat de la liaison:
 - nom destinataire
-- état du lien réseau (disponible ou cassé)
-- état du serveur distant (répond ou pas - plusieures tentatives avant de conclure)
-- opération en cours (établissement du lien, vérification du lien, idem pour le serveur distant)
-- produire une synthèse utilisée par l'objet Affichage.
-- produire un warning à usage de l'objet Action.
-- indication à disposition du joueur distant que notre grille est disponible 'ready'
+- Ã©tat du lien rÃ©seau (disponible ou cassÃ©)
+- Ã©tat du serveur distant (rÃ©pond ou pas - plusieures tentatives avant de conclure)
+- opÃ©ration en cours (Ã©tablissement du lien, vÃ©rification du lien, idem pour le serveur distant)
+- produire une synthÃ¨se utilisÃ©e par l'objet Affichage.
+- produire un warning Ã  usage de l'objet Action.
+- indication Ã  disposition du joueur distant que notre grille est disponible 'ready'
 
 * classe grille
-Gère l'état du jeu:
+GÃ¨re l'Ã©tat du jeu:
 - initialisation des grilles joueur1 et joueur2
-	. interface utilisateur (saisie des positions des bâteaux via leurs identifiants)
-	. respect des règles (position, dimension, superposition)
-- établissement d'un coup (client)
-	. saisie et contrôle de sa validité
+	. interface utilisateur (saisie des positions des bÃ¢teaux via leurs identifiants)
+	. respect des rÃ¨gles (position, dimension, superposition)
+- Ã©tablissement d'un coup (client)
+	. saisie et contrÃ´le de sa validitÃ©
 	. attendre la confirmation de sa prise en compte
-	. affichage et mise à jour
-	(après définition du coup, après réception du coup adversaire:
-	si impact, placer T dans la case ou C dans chaque case du bâteau)
-- réception d'un coup (serveur)
-	. analyse du coup et impact (dans l'eau, touché, coulé)
+	. affichage et mise Ã  jour
+	(aprÃ¨s dÃ©finition du coup, aprÃ¨s rÃ©ception du coup adversaire:
+	si impact, placer T dans la case ou C dans chaque case du bÃ¢teau)
+- rÃ©ception d'un coup (serveur)
+	. analyse du coup et impact (dans l'eau, touchÃ©, coulÃ©)
 	. envoi du message impact vers l'adversaire
-	. affichage grille et effet constaté (log ou popup)'
+	. affichage grille et effet constatÃ© (log ou popup)'
 
-* classe bâteau
-Gère l'état d'un bâteau
+* classe bÃ¢teau
+GÃ¨re l'Ã©tat d'un bÃ¢teau
 - identifiant (List)
 - longueur
-- positions mémorisées ? (peut-être que l'info dans la grille est suffisant)
-- état pour chaque position (intact, touché)
-- état global (coulé: compteur = longueur puis décrémente si touché)
+- positions mÃ©morisÃ©es ? (peut-Ãªtre que l'info dans la grille est suffisant)
+- Ã©tat pour chaque position (intact, touchÃ©)
+- Ã©tat global (coulÃ©: compteur = longueur puis dÃ©crÃ©mente si touchÃ©)
+
+* classe affichage
+- [~] = eau inexplorÃ©e (bleu)
+- [X] = explorÃ© touchÃ© (rouge)
+- [â–ˆ] = explorÃ© mais manquÃ© (blanc)
+- [O] = Mes bateaux (vert)
