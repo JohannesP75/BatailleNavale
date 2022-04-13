@@ -39,9 +39,11 @@
 
 
 
-
+/* Abdessamed 
 
 using BatailleNavale;
 
 Grid grid1 = new Grid();
 grid1.InitGrid(10);
+
+*/

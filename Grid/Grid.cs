@@ -30,7 +30,7 @@ namespace BatailleNavale
                 Console.WriteLine();
                 for (int y = 0; y < size; y++)
                 {
-                    matrix[i].Add ( new Cell() { PointCoordinate = new Point(x,y) });
+                    matrix[x].Add ( new Cell() { PointCoordinate = new Point(x,y) });
                     Console.Write("("+x+ "," +y+")");
                 }
             }
