@@ -64,6 +64,6 @@ Gère l'état d'un bâteau
 
 * classe affichage
 - [~] = eau inexplorée (bleu)
-- [X] = exploré touché (rouge)
-- [█] = exploré mais manqué (blanc)
+- [x] = exploré touché (rouge)
+- [■] = exploré mais manqué (blanc)
 - [O] = Mes bateaux (vert)
