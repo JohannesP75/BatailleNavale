@@ -1,4 +1,24 @@
-﻿//using BatailleNavale;
+﻿namespace BatailleNavale;
+
+class Program
+{
+    public static void Main()
+    {
+        DisplayGrid GrilleJoueur1 = new();
+        DisplayGrid GrilleJoueur2 = new();
+        GrilleJoueur1.Display(1);
+        GrilleJoueur2.Display(2);
+    }
+
+}
+
+
+
+
+
+/*JULIEN*/
+
+//using BatailleNavale;
 //using System.Text.Json;
 
 //class Program
@@ -38,10 +58,11 @@
 //}
 
 
+/*ABDESSAMED*/
 
 
-
-using BatailleNavale;
+/*using BatailleNavale;
 
 Grid grid1 = new Grid();
-grid1.InitGrid(10);
+grid1.InitGrid(10);*/
+
