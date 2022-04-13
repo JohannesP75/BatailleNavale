@@ -12,15 +12,22 @@ namespace BatailleNavale
         public Point PointCoordinate { get; set; }
 
         /// <summary>
-        /// IsOccupied True means YES, False means is free
+        /// Représente si la case est occupée par un navire
         /// </summary>
         public bool IsOccupied { get; set; }
-
+        /// <summary>
+        /// Représente si la case a été touchée
+        /// </summary>
         public bool IsTouched { get; set; }
 
-
+        /// <summary>
+        /// Représente si la case a été touchée par erreur, sans qu'un navire soit présent
+        /// </summary>
         public bool IsMisHit { get; set; }
 
+        /// <summary>
+        /// Pour si la case a été touchée et est occupée
+        /// </summary>
         public bool IsBlowed { get; set; }
 
         public Cell()

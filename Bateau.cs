@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace BatailleNavale
         /// </summary>
         /// <param name="tb">Le type du bateau</param>
         /// <param name="cd">Ses coordonnées de départ</param>
-        public Bateau(TypeBateau tb, Coordonnee cd)
+        public Bateau(TypeBateau tb, Point cd)
         {
             ID = NombreBateaux;
             PointsDeVie = tb.Taille;
@@ -59,7 +60,7 @@ namespace BatailleNavale
         /// <summary>
         /// Point de départ du navire
         /// </summary>
-        public Coordonnee? CoordDepart { get; set; }
+        public Point? CoordDepart { get; set; }
         /// <summary>
         /// Etat du bateau
         /// (EtatBateau.BATEAU_COULE s'il a coulé, EtatBateau.BATEAU_TOUCHE s'il a été touché et EtatBateau.BATEAU_INTACT s'il est intact)
@@ -92,7 +93,8 @@ namespace BatailleNavale
     /// <summary>
     /// Coordonnées sur la grille
     /// </summary>
-    public class Coordonnee
+    /* La classe System.Drawing.Point fait très bien le travail
+     * public class Coordonnee
     {
         /// <summary>
         /// Constructeur de la classe
@@ -119,4 +121,5 @@ namespace BatailleNavale
         /// </summary>
         public int y { get; set; }
     }
+    */
 }
