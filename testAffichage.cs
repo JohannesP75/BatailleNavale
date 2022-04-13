@@ -1,56 +1,48 @@
 ﻿// Test affichage
-namespace BatailleNavale;
+//using BatailleNavale;
 
-class Program
-{
-    static void Main()
-    {
-        public LaGrille cetteGrille { get; set; } = new();
-        cetteGrille.Genere();
-        Affichage.grille(cetteGrille);
-    }
-}
+LaGrille CetteGrille = new();
+CetteGrille.Genere();
+Affichage MonEcran = new();
+MonEcran.Grille(CetteGrille);
 
+//namespace BatailleNavale;
 class Affichage
 {
-    public Affichage() // pas utile
+    public void Grille(LaGrille laGrille)
     {
-    }
-    public void grille(LaGrille laGrille)
-    {
+        if (laGrille == null) return;
         Console.Clear();
         for (int Line = 1; Line < 9; Line++)
         {
             for (int Col = 1; Col < 9; Col++)
             {
-                Console.Write(${ laGrille.lesCases[Col, Line].état, 2});
-    }
-    Console.WriteLine();
+                char? cetEtat = laGrille.LesCases?[Col, Line].état;
+                Console.Write($"{ cetEtat, 2}");
+            }
+            Console.WriteLine();
         }
 
     }
 }
-class LaGrille
+internal class LaGrille
 {
-    public Cases[,]? lesCases { get; set; }
-    public LaGrille
-        {
-         = new Cases[8, 8];
-
+    public Case[,] LesCases { get; set; } = new Case[8, 8]; // static fait partager le même attribut en mémoire
     public void Genere()
     {
+        if (LesCases == null) return;
         for (int Line = 1; Line < 9; Line++)
         {
             for (int Col = 1; Col < 9; Col++)
             {
-                lesCases[Col, Line].état = (char)(32 + Line + Col);
-                lesCases[Col, Line].identifiant = 0;
+                LesCases[Col, Line].état = 'C'; // (char)(32 + Line + Col);
+                LesCases[Col, Line].identifiant = 0;
             }
         }
     }
 }
 
-class Cases
+internal class Case
 {
     public int identifiant; // ref bâteau ou 0 par défaut
     public char état; // (I)ntact (V)ide (C)oulé
