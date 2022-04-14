@@ -11,6 +11,7 @@ class Program
         Console.WriteLine("Ceci est un jeu de bataille navale.");
         TestBateaux();
         //TestGrille();
+        //TestAffichage();
     }
 
     static void TestBateaux()
@@ -18,11 +19,7 @@ class Program
         // Affichage des types de bateaux
         List<ShipType>? ListeTypes = new List<ShipType>();
         String? jsonString = File.ReadAllText("typesBateaux.json");
-        ListeTypes = JsonSerializer.Deserialize<List<ShipType>>(jsonString, new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement),
-            WriteIndented = true
-        });
+        ListeTypes = JsonSerializer.Deserialize<List<ShipType>>(jsonString);
 
         foreach (ShipType tb in ListeTypes) Console.WriteLine($"Catégorie : {tb.ModelName} - Taille : {tb.Size}");
         Console.WriteLine();
@@ -55,7 +52,19 @@ class Program
 
         Console.WriteLine("Fin de TestGrille.");
     }
+
+    static void TestAffichage()
+    {
+        LaGrille GrilleJoueur1 = new();
+        LaGrille GrilleJoueur2 = new();
+        LaGrille.Genere(GrilleJoueur1);
+        LaGrille.Genere(GrilleJoueur2);
+        Affichage MonEcran = new();
+        MonEcran.Grille(GrilleJoueur1, true);
+        MonEcran.Grille(GrilleJoueur2, false);
+    }
 }
+
 
 /* Abdessamed 
 
