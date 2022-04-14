@@ -11,7 +11,6 @@ LaGrille.Genere(GrilleJoueur2);
 Affichage MonEcran = new();
 MonEcran.Grille(GrilleJoueur1, true);
 MonEcran.Grille(GrilleJoueur2, false);
-ComUDP.TestMessage();
 
 class Affichage
 {

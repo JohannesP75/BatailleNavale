@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale
 {
-    enum EtatCase{
+    enum EtatCase
+    {
         CASE_LIBRE_INTACTE,
         CASE_LIBRE_TOUCHEE,
         CASE_OCCUPEE_INTACTE,
@@ -78,7 +79,7 @@ namespace BatailleNavale
             {
                 IsBlowed = true;
             }
-             if (IsTouched & !IsOccupied)
+            if (IsTouched & !IsOccupied)
             {
                 IsMisHit = true;
             }

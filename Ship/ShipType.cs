@@ -14,19 +14,47 @@
         /// <summary>
         /// Nombre de cases encore intactes
         /// </summary>
-        public uint LifePoint { get; set; }
-        /// <summary>
-        /// Longueur du navire
-        /// </summary>
-        public uint Size { get; set; }
+        public int LifePoint { get; set; }
+
+        public int Size { get; set; }
 
 
-        public ShipType(string modelName)
+
+        public bool SetShipType(string type)
         {
-            ModelName = modelName;
-            
+            switch (type)
+            {
+
+                case "1":
+                    ModelName = "Porte-avion";
+                    Size = 5;
+                    break;
+                case "2":
+                    ModelName = "Croiseur";
+                    Size = 4;
+                    break;
+
+                case "3":
+                    ModelName = "Frégate";
+                    Size = 3;
+                    break;
+                case "4":
+                    ModelName = "Sous-marin";
+                    Size = 3;
+                    break;
+
+                case "5":
+                    ModelName = "Escorteur";
+                    Size = 2;
+                    break;
+                default:
+                    return false;
+            }
+
+            return true;
         }
    
    
     }
 }
+
