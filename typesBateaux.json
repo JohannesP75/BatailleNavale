@@ -1,7 +1,7 @@
 [
-  { "NomModele": "Porte-avion", "Taille": 5},
-  { "NomModele": "Croiseur", "Taille": 4},
-  { "NomModele": "Frégate", "Taille": 3},
-  { "NomModele": "Sous-marin", "Taille": 3},
-  { "NomModele": "Escorteur", "Taille": 2}
+  { "ModelName": "Porte-avion", "Size": 5},
+  { "ModelName": "Croiseur", "Size": 4},
+  { "ModelName": "Frégate", "Size": 3},
+  { "ModelName": "Sous-marin", "Size": 3},
+  { "ModelName": "Escorteur", "Size": 2}
 ]

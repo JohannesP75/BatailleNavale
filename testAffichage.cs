@@ -1,118 +1,161 @@
 ﻿// Test affichage
-/*
-namespace BatailleNavale;
 
-class Program
-{
-    static void Main()
-    {
-        public LaGrille cetteGrille { get; set; } = new();
-        cetteGrille.Genere();
-        Affichage.grille(cetteGrille);
-    }
-}
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+LaGrille GrilleJoueur1 = new();
+LaGrille GrilleJoueur2 = new();
+LaGrille.Genere(GrilleJoueur1);
+LaGrille.Genere(GrilleJoueur2);
+Affichage MonEcran = new();
+MonEcran.Grille(GrilleJoueur1, true);
+MonEcran.Grille(GrilleJoueur2, false);
 
 class Affichage
 {
-    public Affichage() // pas utile
+    public void Grille(LaGrille laGrille, bool leJoueur)
     {
-    }
-    public void grille(LaGrille laGrille)
-    {
-        Console.Clear();
-        for (int Line = 1; Line < 9; Line++)
+        if (laGrille == null) return;
+        if (leJoueur)
         {
-            for (int Col = 1; Col < 9; Col++)
+            Console.Clear();
+            Console.WriteLine(" Notre grille:");
+        }
+        else Console.WriteLine("\n Adversaire:");
+        for (int Line = 0; Line < 8; Line++)
+        {
+            if (Line == 0) Console.WriteLine("    A B C D E F G H");
+            Console.Write($"{Line + 1,2} ");
+            for (int Col = 0; Col < 8; Col++)
             {
-                Console.Write(${ laGrille.lesCases[Col, Line].état, 2});
-    }
-    Console.WriteLine();
+                char? cetEtat = laGrille.LesCases?[Col, Line].etat;
+                Console.Write($"{ cetEtat,2}");
+            }
+            Console.WriteLine();
         }
 
     }
 }
 class LaGrille
 {
-    public Cases[,]? lesCases { get; set; }
-    public LaGrille
-        {
-         = new Cases[8, 8];
-
-    public void Genere()
+    public Case[,] LesCases { get; set; } = new Case[8, 8]; // static fait partager le même attribut en mémoire
+    public static void Genere(LaGrille cetteGrille)
     {
-        for (int Line = 1; Line < 9; Line++)
+        if (cetteGrille.LesCases == null) return;
+        Case cetteCase = new();
+        for (int Line = 0; Line < 8; Line++)
         {
-            for (int Col = 1; Col < 9; Col++)
+            for (int Col = 0; Col < 8; Col++)
             {
-                lesCases[Col, Line].état = (char)(32 + Line + Col);
-                lesCases[Col, Line].identifiant = 0;
+                cetteCase.etat = 'V'; // (char)(32 + Line + Col);
+                cetteCase.identifiant = 0;
+                // Object reference not set to an instance of an object
+                cetteGrille.LesCases[Col, Line] = cetteCase;
             }
         }
     }
 }
 
-class Cases
+class Case
 {
-    public int identifiant; // ref bâteau ou 0 par défaut
-    public char état; // (I)ntact (V)ide (C)oulé
+    public int identifiant { get; set; } // ref bâteau ou 0 par défaut
+    public char etat { get; set; } // (I)ntact (V)ide (C)oulé
 }
 
-// Test affichage
-namespace BatailleNavale;
-
-class Program
+class ComUDP
 {
-    static void Main()
+    // This constructor arbitrarily assigns the local port number.
+    static UdpClient udpClient = new UdpClient(11000);
+    //IPEndPoint object will allow us to read datagrams sent from any source.
+    static IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+    public static void TestMessage()
     {
-        public LaGrille cetteGrille { get; set; } = new();
-        cetteGrille.Genere();
-        Affichage.grille(cetteGrille);
-    }
-}
-
-class Affichage
-{
-    public Affichage() // pas utile
-    {
-    }
-    public void grille(LaGrille laGrille)
-    {
-        Console.Clear();
-        for (int Line = 1; Line < 9; Line++)
+        ConsoleKeyInfo Clavier;
+        string? LeMessage;
+        bool TestContinu = true, TestReprendre;
+        Console.WriteLine("Pressez Enter ...");
+        do
         {
-            for (int Col = 1; Col < 9; Col++)
+            Clavier = Console.ReadKey();
+        } while (Clavier.Key != ConsoleKey.Enter);
+        do
+        {
+            Console.Clear();
+            TestReprendre = false;
+            Console.Write("(n)ouveau message (q)uit ?: ");
+            do
             {
-                Console.Write(${ laGrille.lesCases[Col, Line].état, 2});
+                Clavier = Console.ReadKey();
+                switch (Clavier.KeyChar)
+                {
+                    case 'n':
+                        Console.Write("\nEntrez le message: ");
+                        LeMessage = Console.ReadLine();
+                        ComUDP.EnvMessage(LeMessage);
+                        TestContinu = false;
+                        TestReprendre = true;
+                        break;
+
+                    case 'q':
+                        Console.WriteLine(" ... fin.");
+                        TestContinu = false;
+                        break;
+                    default:
+                        break;
+                }
+                if (ComUDP.RecMessage())
+                {
+                    Console.WriteLine("\nPressez Enter ...");
+                    do
+                    {
+                        Clavier = Console.ReadKey();
+                    } while (Clavier.Key != ConsoleKey.Enter);
+                }
+            } while (TestContinu);
+        } while (TestReprendre);
+        udpClient.Close();
     }
-    Console.WriteLine();
+
+    static bool RecMessage()
+    {
+        try
+        {
+            if (udpClient.Available == 0) return false;
+            // Blocks until a message returns on this socket from a remote host.
+            Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
+            string returnData = Encoding.ASCII.GetString(receiveBytes);
+
+            // Uses the IPEndPoint object to determine which of these two hosts responded.
+            Console.WriteLine("This is the message you received " +
+                                              returnData.ToString());
+            Console.WriteLine("This message was sent from " +
+                                        RemoteIpEndPoint.Address.ToString() +
+                                        " on their port number " +
+                                        RemoteIpEndPoint.Port.ToString());
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            return true;
         }
 
     }
-}
-class LaGrille
-{
-    public Cases[,]? lesCases { get; set; }
-    public LaGrille
-        {
-         = new Cases[8, 8];
-
-    public void Genere()
+    static void EnvMessage(string? UnMessage)
     {
-        for (int Line = 1; Line < 9; Line++)
+        try
         {
-            for (int Col = 1; Col < 9; Col++)
-            {
-                lesCases[Col, Line].état = (char)(32 + Line + Col);
-                lesCases[Col, Line].identifiant = 0;
-            }
+            udpClient.Connect("127.0.0.1", 11000); // IP distant à renseigner
+
+            // Sends a message to the host to which you have connected.
+            Byte[] sendBytes = Encoding.ASCII.GetBytes(UnMessage ?? "nop");
+
+            udpClient.Send(sendBytes, sendBytes.Length);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
         }
     }
 }
-
-class Cases
-{
-    public int identifiant; // ref bâteau ou 0 par défaut
-    public char état; // (I)ntact (V)ide (C)oulé
-}
-
-*/
