@@ -1,5 +1,8 @@
 ﻿//using BatailleNavale;
 //using System.Text.Json;
+using BatailleNavale;
+using BatailleNavale.GameManagment;
+using BatailleNavale.Gamer;
 
 //class Program
 //{
@@ -39,11 +42,15 @@
 
 
 
-/* Abdessamed 
+GameManagement girdManagment = new GameManagement();
 
-using BatailleNavale;
+girdManagment.InitGame();
 
-Grid grid1 = new Grid();
-grid1.InitGrid(10);
 
-*/
+
+
+
+
+
+
+

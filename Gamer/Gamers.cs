@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale.Gamer
 {
-    public class Gamer
+    public class Gamers
     {
         public string FullName { get; set; }
 
@@ -14,6 +14,12 @@ namespace BatailleNavale.Gamer
 
         public List<Ship> Ships { get; set; }
 
-
+  
+        public Gamers(string fullName, string ipAddress)
+        {
+            FullName = fullName;
+            IPAddress = ipAddress;
+            Ships = new List<Ship>();
+        }
     }
 }

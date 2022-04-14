@@ -10,7 +10,6 @@ namespace BatailleNavale
 
     public class Ship
     {
-
         /// <summary>
         /// Point de départ du navire
         /// </summary>
@@ -22,21 +21,12 @@ namespace BatailleNavale
         /// </summary>
         public readonly static string[] DescriptionEtatBateau = { "intact", "touché", "coulé" };
 
-        public static uint Id = 0;
-
-     
+        public static int Id = 0;
         public string? Name { get; set; }
-
-
     
         public ShipState shipState;
-
-
-     
-        public uint LifePoint { get; set; }
-
-        public uint size { get; set; }
-
+        public int LifePoint { get; set; }
+        public int size { get; set; }
 
         /// <summary>
         /// Accepte en entrée le type du bateau (TypeBateau) ainsi que ses coordonnées de départ
@@ -52,27 +42,5 @@ namespace BatailleNavale
             ShipStartPointCoordinate = new Point(StartPointCoordinate.X, StartPointCoordinate.Y);
             shipState = ShipState.ShipIntact;
         }
-
-        /* Julien
- 
-
-        /* to be placed into GameManagment
-
-        /// <summary>
-        /// Indique que le navire à été touché 
-        /// </summary>
-        public void EstAttaque()
-        {
-            if (PointsDeVie > 0)
-            {
-                PointsDeVie--;
-
-                EtatBateau = (PointsDeVie > 0) ? EtatBateau.BATEAU_TOUCHE : EtatBateau.BATEAU_COULE;
-            }
-        }
-
-        */
-
-
     }
 }
