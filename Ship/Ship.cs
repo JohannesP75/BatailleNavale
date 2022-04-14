@@ -44,13 +44,18 @@ namespace BatailleNavale
         /// Longueur du bateau
         /// </summary>
         public int Size { get; set; }
+        /// <summary>
+        /// Indique si le navire est horizontal (true) ou vertical (false)
+        /// </summary>
+        public bool Horizontal { get; set; }
 
         /// <summary>
         /// Accepte en entrée le type du bateau (TypeBateau) ainsi que ses coordonnées de départ
         /// </summary>
-        /// <param name="tb">Le type du bateau</param>
-        /// <param name="cd">Ses coordonnées de départ</param>
-        public Ship(ShipType shipType,  Point StartPointCoordinate)
+        /// <param name="shipType">Le type du bateau</param>
+        /// <param name="StartPointCoordinate">Ses coordonnées de départ</param>
+        /// <param name="horizontal">Position horizontale</param>
+        public Ship(ShipType shipType,  Point StartPointCoordinate, bool horizontal=true)
         {
             ID = NombreBateaux;
             NombreBateaux++;
@@ -59,6 +64,7 @@ namespace BatailleNavale
             LifePoint = shipType.Size;
             ShipStartPointCoordinate = new Point(StartPointCoordinate.X, StartPointCoordinate.Y);
             ShipState = ShipState.ShipIntact;
+            Horizontal = horizontal;
         }
     }
 }

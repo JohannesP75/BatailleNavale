@@ -1,5 +1,18 @@
 ﻿// Test affichage
 
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+LaGrille GrilleJoueur1 = new();
+LaGrille GrilleJoueur2 = new();
+LaGrille.Genere(GrilleJoueur1);
+LaGrille.Genere(GrilleJoueur2);
+Affichage MonEcran = new();
+MonEcran.Grille(GrilleJoueur1, true);
+MonEcran.Grille(GrilleJoueur2, false);
+ComUDP.TestMessage();
+
 class Affichage
 {
     public void Grille(LaGrille laGrille, bool leJoueur)
