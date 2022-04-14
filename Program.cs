@@ -1,17 +1,17 @@
-﻿using BatailleNavale;
+﻿//using BatailleNavale;
+//using System.Text.Json;
+using BatailleNavale;
+using BatailleNavale.GameManagment;
+using BatailleNavale.Gamer;
 using System.Drawing;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Unicode;
 
 class Program
 {
     static void Main(String[]? args)
     {
         Console.WriteLine("Ceci est un jeu de bataille navale.");
-        TestBateaux();
-        //TestGrille();
-        //TestAffichage();
+        //TestBateaux();
     }
 
     static void TestBateaux()
@@ -36,7 +36,7 @@ class Program
         for (int i = 0; i < 20; i++)
         {
             int index = rnd.Next(ListeBateaux.Count);
-            ListeBateaux[index].EstAttaque();
+            //ListeBateaux[index].EstAttaque();
             Console.WriteLine($"{ListeBateaux[index].Name} ({ListeBateaux[index].ID}) - Taille {ListeBateaux[index].Size} - Solidité {ListeBateaux[index].LifePoint}/{ListeBateaux[index].Size} - Position ({ListeBateaux[index].ShipStartPointCoordinate.X}, {ListeBateaux[index].ShipStartPointCoordinate.Y}) ({Ship.DescriptionEtatBateau[(int)ListeBateaux[index].ShipState]})");
         }
     }
@@ -48,29 +48,8 @@ class Program
         List<ShipType>? ListeTypes = JsonSerializer.Deserialize<List<ShipType>>(jsonString);
         Grid Grid = new Grid(9);
         Console.WriteLine("\nEtat des cases :");
-        Grid.Show();
+        //Grid.Show();
 
         Console.WriteLine("Fin de TestGrille.");
     }
-
-    static void TestAffichage()
-    {
-        LaGrille GrilleJoueur1 = new();
-        LaGrille GrilleJoueur2 = new();
-        LaGrille.Genere(GrilleJoueur1);
-        LaGrille.Genere(GrilleJoueur2);
-        Affichage MonEcran = new();
-        MonEcran.Grille(GrilleJoueur1, true);
-        MonEcran.Grille(GrilleJoueur2, false);
-    }
 }
-
-
-/* Abdessamed 
-
-using BatailleNavale;
-
-Grid grid1 = new Grid();
-grid1.InitGrid(10);
-
-*/
