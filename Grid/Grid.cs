@@ -7,7 +7,7 @@ namespace BatailleNavale
         /// <summary>
         /// Taille du tableau
         /// </summary>
-        public int size { get; init; }
+        public int size { get; set; }
         /// <summary>
         /// Tableau en 2D représentant les cases du tableau
         /// </summary>
