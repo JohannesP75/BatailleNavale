@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale
 {
-    enum EtatCase
+    public enum CellType
     {
-        CASE_LIBRE_INTACTE,
-        CASE_LIBRE_TOUCHEE,
-        CASE_OCCUPEE_INTACTE,
-        CASE_OCCUPEE_TOUCHEE
+        CELL_UNEXPLORED,
+        CELL_ISTOUCHED,
+        CELL_ISOCCUPIED,
+        CELL_MISHIT
     }
 
     public class Cell
@@ -72,22 +72,29 @@ namespace BatailleNavale
             IsMisHit = false;
             IsBlowed = false;
             PointCoordinate = p;
+            CellType = CellType.CELL_UNEXPLORED;
         }
+
+        // Met à jour l'état de la case
         public void CellState()
         {
             if (IsTouched & IsOccupied)
             {
                 IsBlowed = true;
+                CellType = CellType.CELL_ISTOUCHED;
             }
-            if (IsTouched & !IsOccupied)
+            else if (IsTouched & !IsOccupied)
             {
                 IsMisHit = true;
+                CellType = CellType.CELL_MISHIT;
             }
+            else if (!IsTouched & IsOccupied)
+                CellType = CellType.CELL_ISOCCUPIED;
         }
         /// <summary>
         /// Décrit l'état de la case
         /// </summary>
-        EtatCase EtatCase { get; set; }
+        public CellType CellType { get; set; }
 
     }
 }

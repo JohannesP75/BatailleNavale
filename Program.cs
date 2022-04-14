@@ -12,6 +12,7 @@ class Program
     {
         Console.WriteLine("Ceci est un jeu de bataille navale.");
         //TestBateaux();
+        TestAffichage();
     }
 
     static void TestBateaux()
@@ -51,5 +52,17 @@ class Program
         //Grid.Show();
 
         Console.WriteLine("Fin de TestGrille.");
+    }
+
+    static void TestAffichage()
+    {
+        LaGrille GrilleJoueur1 = new();
+        LaGrille GrilleJoueur2 = new();
+        LaGrille.Genere(GrilleJoueur1);
+        LaGrille.Genere(GrilleJoueur2);
+        Affichage MonEcran = new();
+        MonEcran.Grille(GrilleJoueur1, true);
+        MonEcran.Grille(GrilleJoueur2, false);
+        ComUDP.TestMessage();
     }
 }

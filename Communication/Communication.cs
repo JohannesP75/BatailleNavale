@@ -33,9 +33,10 @@ public class Communication
         IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
         // Blocks until a message returns on this socket from a remote host.
-        Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
+        /*Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
         string returnData = Encoding.ASCII.GetString(receiveBytes);
 
-        return returnData;
+        return returnData;*/
+        return Encoding.ASCII.GetString(udpClient.Receive(ref RemoteIpEndPoint));
     }
 }

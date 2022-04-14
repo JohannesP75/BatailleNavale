@@ -4,38 +4,30 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-LaGrille GrilleJoueur1 = new();
-LaGrille GrilleJoueur2 = new();
-LaGrille.Genere(GrilleJoueur1);
-LaGrille.Genere(GrilleJoueur2);
-Affichage MonEcran = new();
-MonEcran.Grille(GrilleJoueur1, true);
-MonEcran.Grille(GrilleJoueur2, false);
-ComUDP.TestMessage();
-
 class Affichage
 {
     public void Grille(LaGrille laGrille, bool leJoueur)
     {
-        if (laGrille == null) return;
-        if (leJoueur)
+        if (laGrille != null)
         {
-            Console.Clear();
-            Console.WriteLine(" Notre grille:");
-        }
-        else Console.WriteLine("\n Adversaire:");
-        for (int Line = 0; Line < 8; Line++)
-        {
-            if (Line == 0) Console.WriteLine("    A B C D E F G H");
-            Console.Write($"{Line + 1,2} ");
-            for (int Col = 0; Col < 8; Col++)
+            if (leJoueur)
             {
-                char? cetEtat = laGrille.LesCases?[Col, Line].etat;
-                Console.Write($"{ cetEtat,2}");
+                Console.Clear();
+                Console.WriteLine(" Notre grille:");
             }
-            Console.WriteLine();
+            else Console.WriteLine("\n Adversaire:");
+            for (int Line = 0; Line < 8; Line++)
+            {
+                if (Line == 0) Console.WriteLine("    A B C D E F G H");
+                Console.Write($"{Line + 1,2} ");
+                for (int Col = 0; Col < 8; Col++)
+                {
+                    char? cetEtat = laGrille.LesCases?[Col, Line].etat;
+                    Console.Write($"{ cetEtat,2}");
+                }
+                Console.WriteLine();
+            }
         }
-
     }
 }
 class LaGrille

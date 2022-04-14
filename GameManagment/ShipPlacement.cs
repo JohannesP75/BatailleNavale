@@ -26,11 +26,12 @@ namespace BatailleNavale.GameManagment
                     from cell in list
                     where cell.PointCoordinate == new Point(x, y)
                     select cell).ToList().First().IsOccupied;
-
         }
 
         public bool CheckShipDeployementByDirection(int x, int y, bool direction, int size)
         {
+            bool S = true;
+
             // True => Horizontal , False => Verticale
             if (direction)
             {
@@ -39,7 +40,8 @@ namespace BatailleNavale.GameManagment
                 if (!IsValidePointEntred(x, y + size))
                 {
                     Console.WriteLine("Imposible de placer le bateuax sur cette direction");
-                    return false;
+                    S = false;
+                    //return false;
                 }
                 else
                 {
@@ -51,12 +53,13 @@ namespace BatailleNavale.GameManagment
                         {
                             Console.WriteLine("Imposible de placer le bateuax , car les cellules ne sont pas libres");
 
-                            return false;
-                            break;
+                            S = false;
+                            //return false;
                         }
                     }
-                    return true;
+                    S = true;
 
+                    //return true;
                 }
             }
             else
@@ -65,9 +68,9 @@ namespace BatailleNavale.GameManagment
 
                 if (!IsValidePointEntred(x - size, y))
                 {
-
                     Console.WriteLine("Imposible de placer le bateuax sur cette direction");
-                    return false;
+                    S = false;
+                    //return false;
                 }
                 else
                 {
@@ -77,15 +80,16 @@ namespace BatailleNavale.GameManagment
                         if (CellIsOccupied(x, y))
                         {
                             Console.WriteLine("Imposible de placer le bateuax , car les cellules ne sont pas libres");
-                            return false;
                             break;
+                            //return false;
                         }
                     }
-                    return true;
-
+                    S = true;
+                    //return true;
                 }
             }
 
+            return S;
         }
         public bool CheckDeployementPossibility(int x, int y, bool direction, int size)
         {
@@ -96,39 +100,44 @@ namespace BatailleNavale.GameManagment
             // si les coord sont invalide on demande à nouveau de saisir jusqu'à on obtient des valeurs valide
             while (!isValid)
             {
-                Console.WriteLine("Entrez des coordonnées X et Y valide ");
+                Console.WriteLine("Entrez des coordonnées X et Y valides :");
                 string[] msgSplited = Console.ReadLine().Split(',');
 
-                isValid = IsValidePointEntred(Convert.ToInt32(msgSplited[0]), Convert.ToInt32(msgSplited[1]));
                 x = Convert.ToInt32(msgSplited[0]);
                 y = Convert.ToInt32(msgSplited[1]);
+                isValid = IsValidePointEntred(x, y);
             }
 
+            bool S = true;
 
             if (CellIsOccupied(x, y))
             {
                 Console.WriteLine("La cellule est occupée choisi un autre emplacement");
-                return false;
+                S = false;
+                //return false;
             }
-
+            
             if (!CheckShipDeployementByDirection(x, y, direction, size))
             {
-                return false;
-
+                S = false;
+                //return false;
             }
 
-            return true;
+            return S;
         }
+
         public bool IsValidePointEntred(int x, int y)
         {
-            if (x < 0 || y < 0 || x > (grid.size - 1) || y > (grid.size - 1))
+            /*if (x < 0 || y < 0 || x > (grid.size - 1) || y > (grid.size - 1))
             {
                 //Console.WriteLine("les coordonnées saisis sont invalide! x est : {0}  y est : {1} grid.size est : {2}", x,y, grid.size) ;
                 return false;
             }
             else
-                return true;
+                return true;*/
+            return !(x < 0 || y < 0 || x > (grid.size - 1) || y > (grid.size - 1));
         }
+
         public void SetOccupiedCells(ShipType shipType, Point StartPointCoordinate, bool direction)
         {
             if (direction)

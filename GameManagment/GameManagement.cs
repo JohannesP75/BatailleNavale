@@ -10,17 +10,38 @@ using BatailleNavale.GameManagment;
 
 public class GameManagement
 {
+    /// <summary>
+    /// Encapsule les communications réseau
+    /// </summary>
     private Communication communication;
+    /// <summary>
+    /// Le joueur
+    /// </summary>
     public Gamers gamer;
+    /// <summary>
+    /// La grille du joueur
+    /// </summary>
     public Grid myGrid;
+    /// <summary>
+    /// La grille ennemie
+    /// </summary>
     public Grid adverseGrid;
+    /// <summary>
+    /// Place les navires
+    /// </summary>
     public ShipPlacement shipPlacement;
+    /// <summary>
+    /// Nombre de bateaux du joueur
+    /// </summary>
     public int ShipNumber = 5;
 
     /// <summary>
     /// token est le jeton indiquant celui qui va commencer à jouer en premier lorsque si il est à True
     /// </summary>
     public bool token { get; set; } = true;
+    /// <summary>
+    /// Constructeur de la classe
+    /// </summary>
     public GameManagement()
     {
         communication = new Communication();
@@ -28,34 +49,26 @@ public class GameManagement
         myGrid = new Grid(10);
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
-
-
     }
     public void InitGame()
     {
-
         shipPlacement.ShipDeployment(ShipNumber);
+
         if (token)
         {
-        
-        SendMyOccupiedCells(MyOccupiedCells());
+            SendMyOccupiedCells(MyOccupiedCells());
             token = !token;
         }
         else
         {
             SetAdverserGrid(ReceivingHisOccupiedCellsCoord());
             token = !token;
-
         }
-
-
-
     }
 
     public void SendMyOccupiedCells(List<string> MyOccupiedCells)
     {
         communication.SendMessage(String.Join(';', MyOccupiedCells), gamer.IPAddress);
-
     }
 
     public List<string> MyOccupiedCells()
@@ -68,7 +81,7 @@ public class GameManagement
         foreach (var cell in listOccupiedCells)
         {
             listOccupiedCellsCoordinate.Add(cell.PointCoordinate.X.ToString() + "," + cell.PointCoordinate.Y.ToString());
-            Console.WriteLine("My occupied celles are : {0}", cell.PointCoordinate);
+            Console.WriteLine("My occupied cells are : {0}", cell.PointCoordinate);
 
         }
         listOccupiedCellsCoordinate.Add("fin");
@@ -91,7 +104,7 @@ public class GameManagement
         }
         else
         {
-            Console.WriteLine("Les cellules occupée de l'adversaire non pas tout reçu");
+            Console.WriteLine("Les cellules occupée de l'adversaire n'ont pas tout reçu.");
         }
     }
 
@@ -107,13 +120,17 @@ public class GameManagement
         {
             myGrid.matrix[point.X][point.Y].IsMisHit = true;
         }
+
+        // Mettre à jour l'état de la cellule
+        myGrid.matrix[point.X][point.Y].CellState();
     }
 
     public List<string> ReceivingHisOccupiedCellsCoord()
     {
             string message = communication.ReceiveMessage();
-            List<string> result = message.Split(';').ToList();
-            return result;
+            /*List<string> result = message.Split(';').ToList();
+            return result;*/
+            return message.Split(';').ToList();
     }
 
 
@@ -150,6 +167,11 @@ public class GameManagement
         return new Point(-1, -1);
     }
 
+    /// <summary>
+    /// Renvoie le contenu d'une cellule de coordonnées p
+    /// </summary>
+    /// <param name="p">Coordonnées de la céllule recherchée</param>
+    /// <returns>Valeur de la cellule recherchée</returns>
     public Cell CellContent(Point p)
     {
         return (from list in myGrid.matrix
