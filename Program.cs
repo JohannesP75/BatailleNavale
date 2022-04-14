@@ -1,6 +1,8 @@
 ﻿using BatailleNavale;
 using System.Drawing;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 class Program
 {
@@ -8,6 +10,7 @@ class Program
     {
         Console.WriteLine("Ceci est un jeu de bataille navale.");
         TestBateaux();
+        //TestGrille();
     }
 
     static void TestBateaux()
@@ -15,7 +18,11 @@ class Program
         // Affichage des types de bateaux
         List<ShipType>? ListeTypes = new List<ShipType>();
         String? jsonString = File.ReadAllText("typesBateaux.json");
-        ListeTypes = JsonSerializer.Deserialize<List<ShipType>>(jsonString);
+        ListeTypes = JsonSerializer.Deserialize<List<ShipType>>(jsonString, new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement),
+            WriteIndented = true
+        });
 
         foreach (ShipType tb in ListeTypes) Console.WriteLine($"Catégorie : {tb.ModelName} - Taille : {tb.Size}");
         Console.WriteLine();
@@ -36,16 +43,19 @@ class Program
             Console.WriteLine($"{ListeBateaux[index].Name} ({ListeBateaux[index].ID}) - Taille {ListeBateaux[index].Size} - Solidité {ListeBateaux[index].LifePoint}/{ListeBateaux[index].Size} - Position ({ListeBateaux[index].ShipStartPointCoordinate.X}, {ListeBateaux[index].ShipStartPointCoordinate.Y}) ({Ship.DescriptionEtatBateau[(int)ListeBateaux[index].ShipState]})");
         }
     }
-}
 
-class Program
-{
-    static void Main(String[]? args)
+    static void TestGrille()
     {
-        Console.WriteLine("Ceci est un jeu de bataille navale.");
-        TestBateaux();
-    }
+        Console.WriteLine("Création du tableau :");
+        String? jsonString = File.ReadAllText("typesBateaux.json");
+        List<ShipType>? ListeTypes = JsonSerializer.Deserialize<List<ShipType>>(jsonString);
+        Grid Grid = new Grid(9);
+        Console.WriteLine("\nEtat des cases :");
+        Grid.Show();
 
+        Console.WriteLine("Fin de TestGrille.");
+    }
+}
 
 /* Abdessamed 
 

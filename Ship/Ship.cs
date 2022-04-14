@@ -45,6 +45,10 @@ namespace BatailleNavale
         /// Longueur du bateau
         /// </summary>
         public uint Size { get; set; }
+        /// <summary>
+        /// Indique si le bateau est horizontal (true) ou vertical
+        /// </summary>
+        public bool Horizontal { get; set; } = true;
 
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace BatailleNavale
         /// </summary>
         /// <param name="tb">Le type du bateau</param>
         /// <param name="cd">Ses coordonnées de départ</param>
-        public Ship(ShipType shipType,  Point StartPointCoordinate)
+        public Ship(ShipType shipType,  Point StartPointCoordinate, bool horizontal=true)
         {
             ID = ID_Max;
             ID_Max++;
@@ -61,6 +65,7 @@ namespace BatailleNavale
             LifePoint = shipType.Size;
             ShipStartPointCoordinate = new Point(StartPointCoordinate.X, StartPointCoordinate.Y);
             ShipState = ShipState.ShipIntact;
+            Horizontal = horizontal;
         }
 
         /* Julien */

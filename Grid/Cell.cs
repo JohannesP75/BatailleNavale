@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale
 {
-    enum EtatCase{
+    public enum EtatCase{
         CASE_LIBRE_INTACTE,
         CASE_LIBRE_TOUCHEE,
         CASE_OCCUPEE_INTACTE,
@@ -16,7 +16,8 @@ namespace BatailleNavale
 
     public class Cell
     {
-        public static readonly char[] ImageCase = new char[] { '.', ':', '#', '8' };
+        public static string[] ImageCase { get; } = new string[] { "-", ":", "#", "8" };
+
         public Point PointCoordinate { get; set; }
 
         /// <summary>
@@ -71,6 +72,7 @@ namespace BatailleNavale
             IsMisHit = false;
             IsBlowed = false;
             PointCoordinate = p;
+            EtatCaseCell = EtatCase.CASE_LIBRE_INTACTE;
         }
         public void CellState()
         {
@@ -78,7 +80,7 @@ namespace BatailleNavale
             {
                 IsBlowed = true;
             }
-             if (IsTouched & !IsOccupied)
+            if (IsTouched & !IsOccupied)
             {
                 IsMisHit = true;
             }
@@ -86,7 +88,7 @@ namespace BatailleNavale
         /// <summary>
         /// Décrit l'état de la case
         /// </summary>
-        EtatCase EtatCase { get; set; }
+        public EtatCase EtatCaseCell { get; set; }
 
     }
 }

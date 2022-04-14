@@ -12,10 +12,6 @@
         public string ModelName { get; set; }
 
         /// <summary>
-        /// Nombre de cases encore intactes
-        /// </summary>
-        public uint LifePoint { get; set; }
-        /// <summary>
         /// Longueur du navire
         /// </summary>
         public uint Size { get; set; }
