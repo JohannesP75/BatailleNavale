@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale
 {
-    enum EtatCase
+    public enum CellType
     {
-        CASE_LIBRE_INTACTE,
-        CASE_LIBRE_TOUCHEE,
-        CASE_OCCUPEE_INTACTE,
-        CASE_OCCUPEE_TOUCHEE
+        CELL_UNEXPLORED,
+        CELL_ISTOUCHED,
+        CELL_ISOCCUPIED,
+        CELL_MISHIT
     }
 
     public class Cell
     {
+        /// <summary>
+        /// Liste des images à afficher dans la case
+        /// </summary>
         public static readonly char[] ImageCase = new char[] { '.', ':', '#', '8' };
         public Point PointCoordinate { get; set; }
 
@@ -56,15 +59,20 @@ namespace BatailleNavale
         {
             InitCell(new Point(x, y));
         }
+
         /// <summary>
         /// Constructeur de la classe
         /// </summary>
-        /// <param name="p">Coordonnées de la classe</param>
+        /// <param name="p">Coordonnées de la cellule</param>
         public Cell(Point p)
         {
             InitCell(p);
         }
 
+        /// <summary>
+        /// Initialise la cellule
+        /// </summary>
+        /// <param name="p">Point de départ</param>
         private void InitCell(Point p)
         {
             IsOccupied = false;
@@ -72,22 +80,31 @@ namespace BatailleNavale
             IsMisHit = false;
             IsBlowed = false;
             PointCoordinate = p;
+            CellType = CellType.CELL_UNEXPLORED;
         }
+
+        /// <summary>
+        /// Met à jour l'état de la case
+        /// </summary>
         public void CellState()
         {
             if (IsTouched & IsOccupied)
             {
                 IsBlowed = true;
+                CellType = CellType.CELL_ISTOUCHED;
             }
-            if (IsTouched & !IsOccupied)
+            else if (IsTouched & !IsOccupied)
             {
                 IsMisHit = true;
+                CellType = CellType.CELL_MISHIT;
             }
+            else if (!IsTouched & IsOccupied)
+                CellType = CellType.CELL_ISOCCUPIED;
         }
         /// <summary>
         /// Décrit l'état de la case
         /// </summary>
-        EtatCase EtatCase { get; set; }
+        public CellType CellType { get; set; }
 
     }
 }

@@ -11,17 +11,45 @@ using BatailleNavale.GameManagment;
 public class GameManagement
 {
     public Communication communication;
+    /// <summary>
+    /// Encapsule les communications réseau
+    /// </summary>
+    private Communication communication;
+    
+    /// <summary>
+    /// Le joueur
+    /// </summary>
     public Gamers gamer;
+    
+    /// <summary>
+    /// La grille du joueur
+    /// </summary>
     public Grid myGrid;
+    
+    /// <summary>
+    /// La grille ennemie
+    /// </summary>
     public Grid adverseGrid;
+
+    /// <summary>
+    /// Place les navires
+    /// </summary>
     public ShipPlacement shipPlacement;
-    public int ShipNumber = 2;
+
+    /// <summary>
+    /// Nombre de bateaux du joueur
+    /// </summary>
+    public int ShipNumber = 5;
     public Point Blow;
 
     /// <summary>
     /// token est le jeton indiquant celui qui va commencer à jouer en premier lorsque si il est à True
     /// </summary>
     public bool token { get; set; } = true;
+
+    /// <summary>
+    /// Constructeur de la classe
+    /// </summary>
     public GameManagement()
     {
         communication = new Communication();
@@ -33,6 +61,10 @@ public class GameManagement
 
 
     }
+
+    /// <summary>
+    /// Initialise le jeu
+    /// </summary>
     public void InitGame()
     {
         gamer.Ships = shipPlacement.ShipDeployment(ShipNumber);
@@ -113,30 +145,6 @@ public class GameManagement
         }
 
     }
-    //public void SendMyOccupiedCells(List<string> MyOccupiedCells)
-    //{
-    //    communication.SendMessage(String.Join(';', MyOccupiedCells), gamer.IPAddress);
-
-    //}
-
-    //public List<string> MyOccupiedCells()
-    //{
-    //    var listOccupiedCellsCoordinate = new List<string>() { "start" };
-    //    var listOccupiedCells = (from list in myGrid.matrix
-    //                             from cell in list
-    //                             where cell.IsOccupied == true
-    //                             select cell).ToList();
-    //    foreach (var cell in listOccupiedCells)
-    //    {
-    //        listOccupiedCellsCoordinate.Add(cell.PointCoordinate.X.ToString() + "," + cell.PointCoordinate.Y.ToString());
-    //        Console.WriteLine("My occupied celles are : {0}", cell.PointCoordinate);
-
-    //    }
-    //    listOccupiedCellsCoordinate.Add("fin");
-
-    //    return listOccupiedCellsCoordinate;
-    //}
-
 
     //public void SetAdverserGrid(List<string> listString)
     //{
@@ -213,30 +221,21 @@ public class GameManagement
             }
         }
 
-
-
+    public List<string> ReceivingHisOccupiedCellsCoord()
+    {
+            string message = communication.ReceiveMessage();
+            List<string> result = message.Split(';').ToList();
+            return result;
     }
-
-    //public List<string> ReceivingHisOccupiedCellsCoord()
-    //{
-
-    //    if (Communication.UdpDispo)
-    //    {
-    //        string message = Communication.UDPRecu;
-
-    //        //string message = communication.ReceiveMessage();
-    //        List<string> result = message.Split(';').ToList();
-    //        return result;
-    //    }
-
-
-    //}
 
 
     /// <summary>
     /// Envoie les coups d'un joueur à un autre
     /// </summary>
     /// <param name="token">Indique si le joueur à le droit d'agir</param>
+    /// <param name="x">Abscisse du point d'arrivée</param>
+    /// <param name="y">Ordonnée du point d'arrivée</param>
+    /// 
     public void SendingBlow(int x, int y)
     {
         Communication.SendMessage(x.ToString() + "," + y.ToString(), gamer.IPAddress);
@@ -255,13 +254,17 @@ public class GameManagement
         return new Point(Convert.ToInt32(msgSplited[0]), Convert.ToInt32(msgSplited[1]));
     }
 
+    /// <summary>
+    /// Renvoie le contenu d'une cellule de coordonnées p
+    /// </summary>
+    /// <param name="p">Coordonnées de la céllule recherchée</param>
+    /// <returns>Valeur de la cellule recherchée</returns>
     public Cell CellContent(Point p)
     {
         return (from list in myGrid.matrix
                 from cell in list
                 where cell.PointCoordinate == p
                 select cell).ToList().First();
-
     }
 
 

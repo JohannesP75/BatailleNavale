@@ -10,64 +10,88 @@ namespace BatailleNavale
 
     public class Ship
     {
+
         /// <summary>
         /// Point de départ du navire
         /// </summary>
+        /// 
         public Point ShipStartPointCoordinate { get; set; }
-
+      
         /// <summary>
         /// Description des états des tableaux par un tableai dont l'index doit être EtatBateau
         /// </summary>
         public readonly static string[] DescriptionEtatBateau = { "intact", "touché", "coulé" };
+
+        public static int Id = 0;
         /// <summary>
-        /// Nombre de bateaux créés
+        /// Indique l'ID maximale disponible; s'incrémente à chaque création de Ship
         /// </summary>
-        public static int NombreBateaux { get; set; } = 0;
+        public static uint ID_Max { get; set; } = 0;
         /// <summary>
-        /// Numéro d'identification du bateau
+        /// ID du bateau
         /// </summary>
-        public int ID { get; set; }
+        public uint ID { get; set; }
         /// <summary>
-        /// Nom du bateau
+        /// Nom du type du bateau
         /// </summary>
         public string? Name { get; set; }
         /// <summary>
         /// Etat du bateau
         /// </summary>
-
         public ShipState ShipState;
         /// <summary>
-        /// Nombre de cases intactes du bateau
+        /// Points de vie du bateau; le nombre de cases intactes restantes
         /// </summary>
-        public int LifePoint { get; set; }
+        public uint LifePoint { get; set; }
         /// <summary>
         /// Longueur du bateau
         /// </summary>
-        public int Size { get; set; }
+        public uint Size { get; set; }
         /// <summary>
-        /// Indique si le navire est horizontal (true) ou vertical (false)
+        /// Indique si le bateau est horizontal (true) ou vertical
         /// </summary>
-        public bool Horizontal { get; set; }
+        public bool Horizontal { get; set; } = true;
+
 
         /// <summary>
         /// Accepte en entrée le type du bateau (TypeBateau) ainsi que ses coordonnées de départ
         /// </summary>
-        /// <param name="shipType">Le type du bateau</param>
-        /// <param name="StartPointCoordinate">Ses coordonnées de départ</param>
-        /// <param name="horizontal">Position horizontale</param>
-        /// 
-        public List<Point> Position { get; set; }
-        public Ship(ShipType shipType, Point StartPointCoordinate, bool horizontal = true)
+        /// <param name="tb">Le type du bateau</param>
+        /// <param name="cd">Ses coordonnées de départ</param>
+        public Ship(ShipType shipType,  Point StartPointCoordinate, bool horizontal=true)
         {
-            NombreBateaux++;
+            ID = ID_Max;
+         //   ID_Max++;  l'incrimentation est déja faite dans la boucle while du ShipPlacement
             Name = shipType.ModelName;
             Size = shipType.Size;
             LifePoint = shipType.Size;
             ShipStartPointCoordinate = new Point(StartPointCoordinate.X, StartPointCoordinate.Y);
             ShipState = ShipState.ShipIntact;
             Horizontal = horizontal;
-            Position = new List<Point>();
         }
+
+        /* Julien */
+ 
+
+        
+
+        /// <summary>
+        /// Indique que le navire à été touché 
+        /// </summary>
+        public void EstAttaque()
+        {
+            if (LifePoint > 0)
+            {
+                LifePoint--;
+
+                ShipState = (LifePoint > 0) ? ShipState.ShipTouched : ShipState.ShipBlowed;
+            }
+        }
+
+
+
+
+
+
     }
 }
-

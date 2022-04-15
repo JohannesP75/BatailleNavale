@@ -25,10 +25,12 @@ class DisplayGrid
         //plateau de jeu
         for (int i = 0; i < Grid_.size; i++)
         {
-            DisplayCell.DisplayCellIndex(i); //Numérotation Ordonnées
+            DisplayCell.DisplayCellIndex(i, false); //Numérotation Ordonnées
             for (int j = -0; j < Grid_.size; j++) // Ligne
             {
                 if (Grid_.matrix[i][j].IsOccupied == true && Grid_.matrix[i][j].IsTouched == false)
+                /*
+                if (Grid_.matrix[i][j].IsOccupied == true)
                 {
                     DisplayCell.DisplayCellIsOccupied();
                 }
@@ -48,8 +50,8 @@ class DisplayGrid
                 {
                     DisplayCell.DisplayCellIsUnexplored();
                 }
-
-
+                */
+                DisplayCell.Display(Grid_.matrix[i][j]);
             }
             Console.WriteLine();
         }
