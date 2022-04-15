@@ -39,10 +39,10 @@ class DisplayCell
         Console.ResetColor();
     }
 
-    public static void DisplayCellIndex(int index)
+    public static void DisplayCellIndex(int index, bool abscisse=true)
     {
         Console.ForegroundColor = ConsoleColor.DarkYellow;
-        Console.Write($"[{index}]");
+        Console.Write($"[{((abscisse) ? index : Char.ConvertFromUtf32(0x41 + index))}]"); // 0x41 représene 'A' sur UTF-16
         Console.ResetColor();
     }
 

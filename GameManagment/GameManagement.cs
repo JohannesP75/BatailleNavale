@@ -14,22 +14,27 @@ public class GameManagement
     /// Encapsule les communications réseau
     /// </summary>
     private Communication communication;
+    
     /// <summary>
     /// Le joueur
     /// </summary>
     public Gamers gamer;
+    
     /// <summary>
     /// La grille du joueur
     /// </summary>
     public Grid myGrid;
+    
     /// <summary>
     /// La grille ennemie
     /// </summary>
     public Grid adverseGrid;
+
     /// <summary>
     /// Place les navires
     /// </summary>
     public ShipPlacement shipPlacement;
+
     /// <summary>
     /// Nombre de bateaux du joueur
     /// </summary>
@@ -39,6 +44,7 @@ public class GameManagement
     /// token est le jeton indiquant celui qui va commencer à jouer en premier lorsque si il est à True
     /// </summary>
     public bool token { get; set; } = true;
+
     /// <summary>
     /// Constructeur de la classe
     /// </summary>
@@ -50,6 +56,10 @@ public class GameManagement
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
     }
+
+    /// <summary>
+    /// Initialise le jeu
+    /// </summary>
     public void InitGame()
     {
         shipPlacement.ShipDeployment(ShipNumber);
@@ -61,7 +71,7 @@ public class GameManagement
         }
         else
         {
-            SetAdverserGrid(ReceivingHisOccupiedCellsCoord());
+            SetAdversaryGrid(ReceivingHisOccupiedCellsCoord());
             token = !token;
         }
     }
@@ -78,6 +88,7 @@ public class GameManagement
                                  from cell in list
                                  where cell.IsOccupied == true
                                  select cell).ToList();
+        
         foreach (var cell in listOccupiedCells)
         {
             listOccupiedCellsCoordinate.Add(cell.PointCoordinate.X.ToString() + "," + cell.PointCoordinate.Y.ToString());
@@ -89,25 +100,21 @@ public class GameManagement
         return listOccupiedCellsCoordinate;
     }
 
-
-    public void SetAdverserGrid(List<string> listString)
+    public void SetAdversaryGrid(List<string> listString)
     {
-
         if (listString.First() == "start" && listString.Last() == "fin")
         {
             listString.Remove("start");
             listString.Remove("fin");
+
             foreach (string point in listString)
             {
                 adverseGrid.matrix[Convert.ToInt32(point[0])][Convert.ToInt32(point[1])].IsOccupied = true;
             }
         }
         else
-        {
-            Console.WriteLine("Les cellules occupée de l'adversaire n'ont pas tout reçu.");
-        }
+            Console.WriteLine("Les cellules occupées par l'adversaire n'ont pas tout reçu.");
     }
-
 
     public void CheckReceivedBlow()
     {
@@ -133,11 +140,12 @@ public class GameManagement
             return message.Split(';').ToList();
     }
 
-
     /// <summary>
     /// Envoie les coups d'un joueur à un autre
     /// </summary>
     /// <param name="token">Indique si le joueur à le droit d'agir</param>
+    /// <param name="x">Abscisse du point d'arrivée</param>
+    /// <param name="y">Ordonnée du point d'arrivée</param>
     public void SendingBlow(bool token, int x, int y)
     {
         if (token)
@@ -145,7 +153,6 @@ public class GameManagement
             communication.SendMessage(x.ToString() + "," + y.ToString(), gamer.IPAddress);
             token = !token;
         }
-
     }
 
     /// <summary>
@@ -178,13 +185,5 @@ public class GameManagement
                 from cell in list
                 where cell.PointCoordinate == p
                 select cell).ToList().First();
-
     }
-
-
 }
-
-
-
-
-

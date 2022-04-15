@@ -17,6 +17,9 @@ namespace BatailleNavale
 
     public class Cell
     {
+        /// <summary>
+        /// Liste des images à afficher dans la case
+        /// </summary>
         public static readonly char[] ImageCase = new char[] { '.', ':', '#', '8' };
         public Point PointCoordinate { get; set; }
 
@@ -56,15 +59,20 @@ namespace BatailleNavale
         {
             InitCell(new Point(x, y));
         }
+
         /// <summary>
         /// Constructeur de la classe
         /// </summary>
-        /// <param name="p">Coordonnées de la classe</param>
+        /// <param name="p">Coordonnées de la cellule</param>
         public Cell(Point p)
         {
             InitCell(p);
         }
 
+        /// <summary>
+        /// Initialise la cellule
+        /// </summary>
+        /// <param name="p">Point de départ</param>
         private void InitCell(Point p)
         {
             IsOccupied = false;
@@ -75,7 +83,9 @@ namespace BatailleNavale
             CellType = CellType.CELL_UNEXPLORED;
         }
 
-        // Met à jour l'état de la case
+        /// <summary>
+        /// Met à jour l'état de la case
+        /// </summary>
         public void CellState()
         {
             if (IsTouched & IsOccupied)

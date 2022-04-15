@@ -12,7 +12,8 @@ class Program
     {
         Console.WriteLine("Ceci est un jeu de bataille navale.");
         //TestBateaux();
-        TestAffichage();
+        //TestAffichage();
+        TestPlacement();
     }
 
     static void TestBateaux()
@@ -64,5 +65,11 @@ class Program
         MonEcran.Grille(GrilleJoueur1, true);
         MonEcran.Grille(GrilleJoueur2, false);
         ComUDP.TestMessage();
+    }
+
+    static void TestPlacement()
+    {
+        GameManagement gm = new GameManagement();
+        gm.InitGame();
     }
 }

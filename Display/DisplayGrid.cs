@@ -25,7 +25,7 @@ class DisplayGrid
         //plateau de jeu
         for (int i = 0; i < Grid_.size; i++)
         {
-            DisplayCell.DisplayCellIndex(i); //Numérotation Ordonnées
+            DisplayCell.DisplayCellIndex(i, false); //Numérotation Ordonnées
             for (int j = -0; j < Grid_.size; j++) // Ligne
             {
                 /*
