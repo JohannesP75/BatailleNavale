@@ -34,7 +34,6 @@ namespace BatailleNavale
         /// <summary>
         /// Etat du bateau
         /// </summary>
-    
         public ShipState ShipState;
         /// <summary>
         /// Nombre de cases intactes du bateau
