@@ -70,24 +70,16 @@ class ComUDP
     static UdpClient udpClient = new UdpClient(11000);
     //IPEndPoint object will allow us to read datagrams sent from any source.
     static IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-    static ConsoleKeyInfo Clavier;
-    static bool UdpDispo = false;
-    public struct UdpState
-    {
-        public UdpClient uClient;
-        public IPEndPoint iPEnd;
-    }
     public static void TestMessage()
     {
+        ConsoleKeyInfo Clavier;
         string? LeMessage;
         bool TestContinu = true, TestReprendre;
-        UdpState uState = new UdpState();
-
-        ComUDP.AttendreEnter();
-        uState.uClient = udpClient;
-        uState.iPEnd = RemoteIpEndPoint;
-        udpClient.BeginReceive(new AsyncCallback(UdpBienRecu), uState);
-        Console.WriteLine("... en écoute udp ...");
+        Console.WriteLine("Pressez Enter ...");
+        do
+        {
+            Clavier = Console.ReadKey();
+        } while (Clavier.Key != ConsoleKey.Enter);
         do
         {
             Console.Clear();
@@ -95,7 +87,6 @@ class ComUDP
             Console.Write("(n)ouveau message (q)uit ?: ");
             do
             {
-                TestReprendre = false;
                 Clavier = Console.ReadKey();
                 switch (Clavier.KeyChar)
                 {
@@ -103,6 +94,7 @@ class ComUDP
                         Console.Write("\nEntrez le message: ");
                         LeMessage = Console.ReadLine();
                         ComUDP.EnvMessage(LeMessage);
+                        TestContinu = false;
                         TestReprendre = true;
                         break;
 
@@ -113,44 +105,24 @@ class ComUDP
                     default:
                         break;
                 }
-                if (UdpDispo)
+                if (ComUDP.RecMessage())
                 {
-                    UdpDispo = false;
-                    Console.WriteLine("Boucle: message reçu.");
+                    Console.WriteLine("\nPressez Enter ...");
+                    do
+                    {
+                        Clavier = Console.ReadKey();
+                    } while (Clavier.Key != ConsoleKey.Enter);
                 }
-                //if (ComUDP.RecMessage()) ComUDP.AttendreEnter();
             } while (TestContinu);
         } while (TestReprendre);
         udpClient.Close();
     }
 
-    static void UdpBienRecu(IAsyncResult? asRes)
-    {
-        UdpClient u = ((UdpState)(asRes.AsyncState)).uClient;
-        IPEndPoint e = ((UdpState)(asRes.AsyncState)).iPEnd;
-
-        byte[] receiveBytes = u.EndReceive(asRes, ref e);
-        string receiveString = Encoding.ASCII.GetString(receiveBytes);
-
-        Console.WriteLine($"CBack Recu: {receiveString}");
-        Console.WriteLine("This message was sent from " +
-                                    e.Address.ToString() +
-                                    " on their port number " +
-                                    e.Port.ToString());
-        UdpDispo = true;
-
-        UdpState uState = new UdpState();
-        uState.uClient = udpClient;
-        uState.iPEnd = RemoteIpEndPoint;
-        udpClient.BeginReceive(new AsyncCallback(UdpBienRecu), uState);
-    }
-
-    /*
     static bool RecMessage()
     {
         try
         {
-            if (udpClient.Available == 0) return false; // Available
+            if (udpClient.Available == 0) return false;
             // Blocks until a message returns on this socket from a remote host.
             Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
             string returnData = Encoding.ASCII.GetString(receiveBytes);
@@ -171,13 +143,11 @@ class ComUDP
         }
 
     }
-    */
-
     static void EnvMessage(string? UnMessage)
     {
         try
         {
-            udpClient.Connect("127.0.0.1", 11000); // IP distant à renseigner 192.168.1.112
+            udpClient.Connect("127.0.0.1", 11000); // IP distant à renseigner
 
             // Sends a message to the host to which you have connected.
             Byte[] sendBytes = Encoding.ASCII.GetBytes(UnMessage ?? "nop");
@@ -188,14 +158,5 @@ class ComUDP
         {
             Console.WriteLine(e.ToString());
         }
-    }
-
-    public static void AttendreEnter()
-    {
-        Console.WriteLine("Pressez Enter ...");
-        do
-        {
-            Clavier = Console.ReadKey();
-        } while (Clavier.Key != ConsoleKey.Enter);
     }
 }
