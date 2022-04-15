@@ -45,6 +45,10 @@ using BatailleNavale.Gamer;
 GameManagement girdManagment = new GameManagement();
 
 girdManagment.InitGame();
+girdManagment.StartGame();
+
+
+//girdManagment.CheckReceivedBlow();
 
 
 

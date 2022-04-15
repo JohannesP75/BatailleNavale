@@ -13,34 +13,61 @@ namespace BatailleNavale
         /// <summary>
         /// Point de départ du navire
         /// </summary>
-        /// 
         public Point ShipStartPointCoordinate { get; set; }
-      
+
         /// <summary>
         /// Description des états des tableaux par un tableai dont l'index doit être EtatBateau
         /// </summary>
         public readonly static string[] DescriptionEtatBateau = { "intact", "touché", "coulé" };
-
-        public static int Id = 0;
+        /// <summary>
+        /// Nombre de bateaux créés
+        /// </summary>
+        public static int NombreBateaux { get; set; } = 0;
+        /// <summary>
+        /// Numéro d'identification du bateau
+        /// </summary>
+        public int ID { get; set; }
+        /// <summary>
+        /// Nom du bateau
+        /// </summary>
         public string? Name { get; set; }
-    
-        public ShipState shipState;
+        /// <summary>
+        /// Etat du bateau
+        /// </summary>
+
+        public ShipState ShipState;
+        /// <summary>
+        /// Nombre de cases intactes du bateau
+        /// </summary>
         public int LifePoint { get; set; }
-        public int size { get; set; }
+        /// <summary>
+        /// Longueur du bateau
+        /// </summary>
+        public int Size { get; set; }
+        /// <summary>
+        /// Indique si le navire est horizontal (true) ou vertical (false)
+        /// </summary>
+        public bool Horizontal { get; set; }
 
         /// <summary>
         /// Accepte en entrée le type du bateau (TypeBateau) ainsi que ses coordonnées de départ
         /// </summary>
-        /// <param name="tb">Le type du bateau</param>
-        /// <param name="cd">Ses coordonnées de départ</param>
-        public Ship(ShipType shipType,  Point StartPointCoordinate)
+        /// <param name="shipType">Le type du bateau</param>
+        /// <param name="StartPointCoordinate">Ses coordonnées de départ</param>
+        /// <param name="horizontal">Position horizontale</param>
+        /// 
+        public List<Point> Position { get; set; }
+        public Ship(ShipType shipType, Point StartPointCoordinate, bool horizontal = true)
         {
-            Id ++;
+            NombreBateaux++;
             Name = shipType.ModelName;
-            size = shipType.Size;
+            Size = shipType.Size;
             LifePoint = shipType.Size;
             ShipStartPointCoordinate = new Point(StartPointCoordinate.X, StartPointCoordinate.Y);
-            shipState = ShipState.ShipIntact;
+            ShipState = ShipState.ShipIntact;
+            Horizontal = horizontal;
+            Position = new List<Point>();
         }
     }
 }
+

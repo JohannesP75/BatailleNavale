@@ -28,7 +28,7 @@ class DisplayGrid
             DisplayCell.DisplayCellIndex(i); //Numérotation Ordonnées
             for (int j = -0; j < Grid_.size; j++) // Ligne
             {
-                if (Grid_.matrix[i][j].IsOccupied == true)
+                if (Grid_.matrix[i][j].IsOccupied == true && Grid_.matrix[i][j].IsTouched == false)
                 {
                     DisplayCell.DisplayCellIsOccupied();
                 }
@@ -36,7 +36,7 @@ class DisplayGrid
                 {
                     DisplayCell.DisplayCellIsTouched();
                 }
-                else if (Grid_.matrix[i][j].IsMisHit == true)
+                else if (Grid_.matrix[i][j].IsMisHit == true )
                 {
                     DisplayCell.DisplayCellIsMisHit();
                 }
