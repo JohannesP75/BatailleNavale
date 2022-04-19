@@ -16,17 +16,17 @@ class DisplayGrid
 
         // Numérotation Abscisse
         Console.Write("   ");
-        for (int j = 0; j < Grid_.size; j++)
+        for (int j = 0; j < Grid_.Size; j++)
         {
-            DisplayCell.DisplayCellIndex(j);
+            DisplayCell.DisplayCellIndex(j+1);
         }
         Console.WriteLine();
 
         //plateau de jeu
-        for (int i = 0; i < Grid_.size; i++)
+        for (int i = 0; i < Grid_.Size; i++)
         {
             DisplayCell.DisplayCellIndex(i, false); //Numérotation Ordonnées
-            for (int j = -0; j < Grid_.size; j++) // Ligne
+            for (int j = -0; j < Grid_.Size; j++) // Ligne
             {
                 /*
                 if (Grid_.matrix[i][j].IsOccupied == true)

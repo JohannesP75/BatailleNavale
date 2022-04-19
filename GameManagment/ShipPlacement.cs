@@ -31,7 +31,7 @@ namespace BatailleNavale.GameManagment
         /// </summary>
         /// <param name="x">Abscisse</param>
         /// <param name="y">Ordonnée</param>
-        /// <returns></returns>
+        /// <returns>true si occupée, false sinon</returns>
         public bool CellIsOccupied(int x, int y)
         {
             return (from list in grid.matrix
@@ -44,12 +44,20 @@ namespace BatailleNavale.GameManagment
         /// Vérifie si il y a de a place disponible pour placer un navire donné
         /// </summary>
         /// <param name="ship">Bateau à placer</param>
-        /// <returns>Indique si le bateau a été bien placé</returns>
+        /// <returns>Indique si le bateau a été bien placé (true si oui, false sinon)</returns>
         public bool CheckShipDeployementByDirection(Ship ship)
         {
             return CheckShipDeployementByDirection(ship.ShipStartPointCoordinate.X, ship.ShipStartPointCoordinate.Y, ship.Horizontal, ship.Size);
         }
 
+        /// <summary>
+        /// Vérifie si le bateau peut etre déployé dans cette direction
+        /// </summary>
+        /// <param name="x">Abscisse du point de départ</param>
+        /// <param name="y">Ordonnée du point de départ</param>
+        /// <param name="direction">Sens du bateau (true si horizontal, false sinon)</param>
+        /// <param name="size">Longueur du bateau</param>
+        /// <returns>true si le bateau pet être placé, false sinon</returns>
         private bool CheckShipDeployementByDirection(int x, int y, bool direction, int size)
         {
             bool S = true;
@@ -57,57 +65,50 @@ namespace BatailleNavale.GameManagment
             // True => Horizontal , False => Verticale
             if (direction)
             {
-                Console.WriteLine($"(x : {x}, y : {y} , CheckPointEntred({x-size}, y): {IsValidePointEntred(x - size, y)}, direction : {direction}");
+                Console.WriteLine($"(x : {x}, y : {y} , CheckPointEntred({x-size}, y): {IsValidePointEntred(x - size, y)}, horizontal : {direction}");
 
                 if (!IsValidePointEntred(x, y + size))
                 {
-                    Console.WriteLine("Imposible de placer le bateau dans cette direction !");
+                    Console.WriteLine("Imposible de placer le bateau dans cette direction horizontale !");
                     S = false;
-                    //return false;
                 }
                 else
                 {
-                    for (int i = y + 1; i < y + size; i++)
+                    for (int i = y; i < y + size; i++)
                     {
-                        Console.WriteLine("(x : {0}, y : {1} , CellIsOccupied : {2}", x, y, CellIsOccupied(x, y));
+                        Console.WriteLine($"(x : {x}, y : {i} , CellIsOccupied : {CellIsOccupied(x, i)}");
 
-                        if (CellIsOccupied(x, y))
+                        if (CellIsOccupied(i, y))
                         {
                             Console.WriteLine("Imposible de placer le bateau car les cellules ne sont pas libres !");
 
                             S = false;
                             break;
-                            //return false;
                         }
-                        S = true;
                     }
-                    //return true;
                 }
             }
             else
             {
-                Console.WriteLine($"(x : {x}, y : {y} , CheckPointEntred({x-size}, y): {IsValidePointEntred(x - size, y)}, direction : {direction}");
+                Console.WriteLine($"(x : {x}, y : {y} , CheckPointEntred({x-size}, y): {IsValidePointEntred(x - size, y)}, horizontal : {direction}");
 
                 if (!IsValidePointEntred(x - size, y))
                 {
-                    Console.WriteLine("Imposible de placer le bateaux dans cette direction !");
+                    Console.WriteLine("Imposible de placer le bateau dans cette direction !");
                     S = false;
-                    //return false;
                 }
                 else
                 {
-                    for (int i = x - 1; i < x - size; i--)
+                    for (int i = x; i < x - size; i--)
                     {
-                        Console.WriteLine("(x : {0}, y : {1} , CellIsOccupied : {2}", x, y, CellIsOccupied(x, y));
+                        Console.WriteLine($"(x : {i}, y : {y} , CellIsOccupied : {CellIsOccupied(i, y)}");
                         if (CellIsOccupied(x, y))
                         {
                             Console.WriteLine("Imposible de placer le bateau car les cellules ne sont pas libres !");
+                            S = false;
                             break;
-                            //return false;
                         }
-                        S = true;
                     }
-                    //return true;
                 }
             }
 
@@ -138,7 +139,7 @@ namespace BatailleNavale.GameManagment
             //Console.WriteLine("les coordonnées saisis sont valide! x est : {0}  y est : {1} grid.size est : {2} isValid : {3}", x, y, grid.size, isValid);
 
             // si les coord sont invalide on demande à nouveau de saisir jusqu'à on obtient des valeurs valide
-            while (!isValid)
+            /*while (!isValid)
             {
                 Console.WriteLine("Entrez des coordonnées X et Y valides :");
                 string[] msgSplited = Console.ReadLine().Split(',');
@@ -146,9 +147,11 @@ namespace BatailleNavale.GameManagment
                 x = Convert.ToInt32(msgSplited[0]);
                 y = Convert.ToInt32(msgSplited[1]);
                 isValid = IsValidePointEntred(x, y);
-            }
+                Console.WriteLine("Entrez des coordonnées valides !");
+                string msg = Console.ReadLine();
+            }*/
 
-            bool S = true;
+            /*bool S = true;
 
             if (CellIsOccupied(x, y))
             {
@@ -161,9 +164,9 @@ namespace BatailleNavale.GameManagment
             {
                 S = false;
                 //return false;
-            }
+            }*/
 
-            return S;
+            return !CellIsOccupied(x, y) && CheckShipDeployementByDirection(x, y, direction, size);
         }
 
         public bool IsValidePointEntred(int x, int y)
@@ -175,7 +178,7 @@ namespace BatailleNavale.GameManagment
             }
             else
                 return true;*/
-            return (x >= 0 && y >= 0 && x < grid.size  && y < grid.size - 1);
+            return (x >= 0 && y >= 0 && x < grid.Size  && y < grid.Size - 1);
         }
 
         public void SetOccupiedCells(ShipType shipType, Point StartPointCoordinate, bool direction)
@@ -229,13 +232,48 @@ namespace BatailleNavale.GameManagment
                         } while (!Int32.TryParse(Console.ReadLine(), out navalType));
                     }
                 }
-                
-                Console.WriteLine("Mettez les coordonnées X et Y comme point du départ du bateau");
-                string[] msgSplited = Console.ReadLine().Split(',');
 
-                Point StartPointCoordinate = new Point(Convert.ToInt32(msgSplited[0]), Convert.ToInt32(msgSplited[1]));
                 Console.WriteLine("Choisissez 1 pour le placer horizontalement sinon 0 ");
                 bool direction = Convert.ToBoolean(Convert.ToInt32(Console.ReadLine()));
+
+                /*Console.WriteLine("Mettez les coordonnées X et Y comme point du départ du bateau");
+                string[] msgSplited = Console.ReadLine().Split(',');*/
+
+                bool valable = false;
+                int X = 0, Y = 0;
+                string entry;
+                do {
+                    Console.WriteLine("Mettez les coordonnées du point de départ du bateau (lettre puis chiffre, tout collés, comme E7) :");
+                    entry = Console.ReadLine().ToUpper();
+                    char _X;
+
+                    if (entry.Length < 2)
+                    { // La chaine est trop courte
+                        Console.WriteLine("Votre chaine était trop courte !");
+                        continue;
+                    }
+                    else if (!Int32.TryParse(Convert.ToString(entry.Substring(1)), out Y))
+                    {
+                        Console.WriteLine("Vous deviez entrer un entier pour Y !");
+                        continue; // Retour au début de la boucle
+                    }
+                    else if (!Char.TryParse(Convert.ToString(entry[0]), out _X))
+                    {
+                        Console.WriteLine("Vous deviez entrer un char pour X !");
+                        continue; // Retour au début de la boucle
+                    }
+                    else
+                    {
+                        X = Convert.ToInt32(_X) - Convert.ToInt32('A'); // Distance par rapport à 1
+                        Y--; // Sur le tableau, la numérotation commence à 1
+
+                        if (CellIsOccupied(X, Y) || X > grid.Size || Y > grid.Size || !CheckDeployementPossibility(X, Y, direction, shipType.Size)) continue;
+                        else valable = true;
+                    }
+                } while (!valable);
+
+                Point StartPointCoordinate = new Point(X, Y);
+                
 
                 if (CheckDeployementPossibility(StartPointCoordinate.X, StartPointCoordinate.Y, direction, shipType.Size))
                 {

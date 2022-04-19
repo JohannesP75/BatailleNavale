@@ -7,6 +7,20 @@
     {
 
         /// <summary>
+        /// Constructeur vide
+        /// </summary>
+        public ShipType()
+        {
+
+        }
+
+        public ShipType(string _name, int _size)
+        {
+            ModelName = _name;
+            Size = _size;
+        }
+
+        /// <summary>
         /// Nom du type du navire (ex: sous-marin, porte-avion, etc...)
         /// </summary>
         public string ModelName { get; set; }

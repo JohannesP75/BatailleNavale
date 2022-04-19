@@ -78,7 +78,7 @@ public class GameManagement
 
     public void SendMyOccupiedCells(List<string> MyOccupiedCells)
     {
-        communication.SendMessage(String.Join(';', MyOccupiedCells), gamer.IPAddress);
+        communication.SendMessage(gamer.IPAddress, String.Join(';', MyOccupiedCells));
     }
 
     public List<string> MyOccupiedCells()
@@ -150,7 +150,7 @@ public class GameManagement
     {
         if (token)
         {
-            communication.SendMessage(x.ToString() + "," + y.ToString(), gamer.IPAddress);
+            communication.SendMessage(gamer.IPAddress, x.ToString() + "," + y.ToString());
             token = !token;
         }
     }

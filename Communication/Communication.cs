@@ -5,16 +5,110 @@ using System.Text;
 public class Communication
 {
     public static readonly int PortStandard = 1000;
-    UdpClient udpClient = new UdpClient(PortStandard);
+    // This constructor arbitrarily assigns the local port number.
+    static UdpClient udpClient = new UdpClient(11000);
+    //IPEndPoint object will allow us to read datagrams sent from any source.
+    static IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+    static ConsoleKeyInfo Clavier;
+    public static bool UdpDispo = false; // cet indicateur informe de la présence d'un message reçu
+                        // que l'on doit annuler avant de pouvoir recevoir à nouveau
+    public static string UDPRecu = "";
+    public struct UdpState
+    {
+        public UdpClient uClient;
+        public IPEndPoint iPEnd;
+    }
+    public char InitJeton(string? IPAdversaire)
+        // execute un envoi udp 'jeton' (option: avec délai rnd)
+    {      // retourne 'A'bandon 'M'aître 'E'sclave
+        string? LeMessage;
+        bool TestReprendre;
+        UdpState uState = new UdpState();
+        System.DateTime Instant = new();
+        int PoidsJeton = 0;
+        char InitToken = 'A';
 
-    public bool SendMessage(string message, string address)
+        uState.uClient = udpClient;
+        uState.iPEnd = RemoteIpEndPoint;
+        udpClient.BeginReceive(new AsyncCallback(UdpBienRecu), uState); // en écoute
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("... en écoute udp ...");
+            TestReprendre = true;
+            LeMessage = "jeton" + ',' + PoidsJeton.ToString();
+            Console.Write("Test jeton init");
+            SendMessage(IPAdversaire, LeMessage);
+            int SecondeInit = Instant.Second;
+            Console.Write("pas encore de connexion (T={SecondInit}) (q)uit ?: ");
+            do
+            {
+                Clavier = Console.ReadKey();
+                switch (Clavier.KeyChar)
+                {
+                    case 'q': // abandon de la tentative de connexion
+                        Console.WriteLine(" ... fin.");
+                        TestReprendre = false;
+                        InitToken = 'A';
+                        udpClient.Close();
+                        break;
+                    default:
+                        break;
+                }
+                if (UdpDispo) // udp reçu
+                {
+                    UdpDispo = false;
+                    Console.WriteLine("Boucle: {0} reçu.", UDPRecu);
+                    // comparaison du poids des jetons des 2 joueurs
+                    if (int.Parse(UDPRecu[(1 + UDPRecu.IndexOf(','))..]) > PoidsJeton)
+                    {
+                        Console.WriteLine("L'adversaire débute la partie");
+                        InitToken = 'E';
+                    }
+                    else
+                    {
+                        Console.WriteLine("Je débute la partie");
+                        InitToken = 'M';
+                        PoidsJeton++;
+                        LeMessage = "jeton" + ',' + PoidsJeton.ToString();
+                        // un dernier message pour confirmer le poids supérieur
+                        SendMessage(IPAdversaire, LeMessage);
+                    }
+                    TestReprendre = false;
+                    break;
+                }
+            } while ((Instant.Second - SecondeInit) < 2);
+            if (PoidsJeton++ > 100) PoidsJeton = 1;
+        } while (TestReprendre);
+        return InitToken;
+    }
+
+    static void UdpBienRecu(IAsyncResult? asRes)
+    {
+        // identification du paquet reçu et extraction des données
+        UdpClient u = ((UdpState)(asRes.AsyncState)).uClient;
+        IPEndPoint e = ((UdpState)(asRes.AsyncState)).iPEnd;
+
+        byte[] receiveBytes = u.EndReceive(asRes, ref e);
+        UDPRecu = Encoding.ASCII.GetString(receiveBytes);
+        UdpDispo = true;
+
+        // réinitialisation du processus d'écoute
+        UdpState uState = new UdpState();
+        uState.uClient = udpClient;
+        uState.iPEnd = RemoteIpEndPoint;
+        udpClient.BeginReceive(new AsyncCallback(UdpBienRecu), uState);
+    }
+
+    public bool SendMessage(string? IPAdversaire, string? Message)
     {
         bool S = true;
+
         try
         {
-            udpClient.Connect(address, PortStandard);
+            udpClient.Connect(IPAdversaire, PortStandard);
             // Sends a message to the host to which you have connected.
-            Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+            Byte[] sendBytes = Encoding.ASCII.GetBytes(Message);
 
             udpClient.Send(sendBytes, sendBytes.Length);
         }

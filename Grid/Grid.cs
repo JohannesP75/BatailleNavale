@@ -7,7 +7,7 @@ namespace BatailleNavale
         /// <summary>
         /// Taille du tableau
         /// </summary>
-        public int size { get; set; }
+        public int Size { get; set; }
         /// <summary>
         /// Tableau en 2D représentant les cases du tableau
         /// </summary>
@@ -18,7 +18,7 @@ namespace BatailleNavale
         /// </summary>
         public Grid()
         {
-            InitGrid(size);
+            InitGrid(Size);
         }
         /// <summary>
         /// Constructeur de la classe
@@ -26,7 +26,7 @@ namespace BatailleNavale
         /// <param name="s">Taille de la carte (longeur et largeur)</param>
         public Grid(int s)
         {
-            size = s;
+            Size = s;
             InitGrid(s);
 
         }
