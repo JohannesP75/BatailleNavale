@@ -1,4 +1,6 @@
 ﻿
+using BatailleNavale;
+
 namespace BatailleNavale;
 
 class DisplayCell
@@ -48,6 +50,8 @@ class DisplayCell
 
     public static void Display(Cell c)
     {
+       // Console.WriteLine(" ForegroundColor : {0}", CellColor[(int)c.CellType]);
+
         Console.ForegroundColor = CellColor[(int)c.CellType];
         Console.Write($"[{CellImage[(int)c.CellType]}]");
         Console.ResetColor();

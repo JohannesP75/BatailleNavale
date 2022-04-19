@@ -39,7 +39,7 @@ public class Communication
             Console.Write("Test jeton init ");
             SendMessage(LeMessage, IPAdversaire);
             int SecondeInit = Instant.Second;
-            Console.Write($", pas encore de connexion (T={SecondeInit}) (q)uit ?: ");
+            Console.Write($", pas encore de connexion (T= {SecondeInit}) (q)uit ?: ");
             do
             {
                 Clavier = Console.ReadKey();

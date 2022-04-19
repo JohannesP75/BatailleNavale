@@ -9,6 +9,8 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
+
+/*
 class Program
 {
     static void Main(String[]? args)
@@ -61,17 +63,11 @@ class Program
         Console.WriteLine("Fin de TestGrille.");
     }
 }
+*/
 
 GameManagement gridManagment = new GameManagement();
 
 gridManagment.InitGame();
+gridManagment.StartGame();
 
 
-
-
-using BatailleNavale;
-
-Grid grid1 = new Grid();
-grid1.InitGrid(10);
-
-*/

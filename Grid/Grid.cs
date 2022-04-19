@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using BatailleNavale;
+using System.Drawing;
 
 namespace BatailleNavale
 {
@@ -13,13 +14,6 @@ namespace BatailleNavale
         /// </summary>
         public List<List<Cell>>? matrix;
 
-        /// <summary>
-        /// Constructeur de la classe utilisant la valeur standard de size
-        /// </summary>
-        public Grid()
-        {
-            InitGrid(size);
-        }
         /// <summary>
         /// Constructeur de la classe
         /// </summary>
@@ -47,7 +41,7 @@ namespace BatailleNavale
                 for (int y = 0; y < size; y++)
                 {
                     matrix[x].Add(new Cell() { PointCoordinate = new Point(x, y) });
-                   // Console.Write("(" + x + "," + y + ")");
+                    // Console.Write("(" + x + "," + y + ")");
                 }
             }
 

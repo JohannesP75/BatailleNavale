@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace BatailleNavale.Gamer
 {
-    public class Gamers
+    public class Gamer
     {
         public string FullName { get; set; }
 
-        public string IPAddress  { get; set; }
+        public string IPAddress { get; set; }
 
         public List<Ship> Ships { get; set; }
 
-  
-        public Gamers(string fullName, string ipAddress)
+
+        public Gamer(string fullName, string ipAddress)
         {
             FullName = fullName;
             IPAddress = ipAddress;
