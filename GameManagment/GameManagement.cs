@@ -10,24 +10,10 @@ using BatailleNavale.GameManagment;
 
 public class GameManagement
 {
-    public Communication communication;
-    /// <summary>
-    /// Encapsule les communications réseau
-    /// </summary>
-    
-    /// <summary>
-    /// Le joueur
-    /// </summary>
     public Gamer gamer;
-    
-    /// <summary>
-    /// La grille du joueur
-    /// </summary>
+
     public Grid myGrid;
-    
-    /// <summary>
-    /// La grille ennemie
-    /// </summary>
+
     public Grid adverseGrid;
 
     /// <summary>
@@ -46,27 +32,19 @@ public class GameManagement
     /// </summary>
     public bool token { get; set; } = true;
 
-    /// <summary>
-    /// Constructeur de la classe
-    /// </summary>
+
     public GameManagement()
     {
-        communication = new Communication();
         gamer = new Gamer("Joueur1", "192.168.1.60");
         myGrid = new Grid(10);
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
         Blow = new Point(-1, -1);
-        Console.WriteLine(" is occupied [2][5]  {0}", myGrid.matrix[2][5].IsOccupied);
-        Console.WriteLine(" In Game management constr");
         DisplayGrid.Display(myGrid);
 
 
     }
 
-    /// <summary>
-    /// Initialise le jeu
-    /// </summary>
     public void InitGame()
     {
         gamer.Ships = shipPlacement.ShipDeployment(ShipNumber);
@@ -77,7 +55,6 @@ public class GameManagement
     {
         if (x < 0 || y < 0 || x > (adverseGrid.size - 1) || y > (adverseGrid.size - 1))
         {
-            //Console.WriteLine("les coordonnées saisis sont invalide! x est : {0}  y est : {1} grid.size est : {2}", x,y, grid.size) ;
             return false;
         }
         else
@@ -86,21 +63,6 @@ public class GameManagement
 
     public void StartGame()
     {
-        var initToken = Communication.InitJeton(gamer.IPAddress);
-        switch (initToken)
-        {
-            case 'A':
-                return;
-                break;
-            case 'M':
-                token = true;
-                break;
-            case 'E':
-                token = false;
-                break;
-
-
-        }
 
         while (true)
         {
@@ -112,7 +74,7 @@ public class GameManagement
                 int entredBlowX = (int)Convert.ToChar(entredBlow[0][0]) - 'A';
                 int entredBlowY = (int)Convert.ToChar(entredBlow[1][0]) - '0';
 
-                Blow = new Point(entredBlowX,entredBlowY);
+                Blow = new Point(entredBlowX, entredBlowY);
 
                 while (!IsValideBlowEntred(Blow.X, Blow.Y))
                 {
@@ -127,13 +89,13 @@ public class GameManagement
 
                 SendingBlow(Blow.X, Blow.Y);
 
-                do
-                {
-                    ReadReceivingMessageAndUpdateAdversairGrid();
-                } while (!Communication.UdpDispo);
 
+                ReadReceivingMessageAndUpdateAdversairGrid();
 
-                Console.WriteLine("Adversaire grid");
+                Console.WriteLine("My Grid");
+                DisplayGrid.Display(myGrid);
+
+                Console.WriteLine("Adversaire Grid");
                 DisplayGrid.Display(adverseGrid);
 
                 token = !token;
@@ -145,8 +107,12 @@ public class GameManagement
                 Console.WriteLine("Coup reçu! ");
 
                 CheckReceivedBlow(reveivedBlowPoint);
-                Console.WriteLine("My grid");
+
+                Console.WriteLine("My Grid");
                 DisplayGrid.Display(myGrid);
+
+                Console.WriteLine("Adversaire Grid");
+                DisplayGrid.Display(adverseGrid);
 
 
                 token = !token;
@@ -156,23 +122,6 @@ public class GameManagement
 
     }
 
-    //public void SetAdverserGrid(List<string> listString)
-    //{
-
-    //    if (listString.First() == "start" && listString.Last() == "fin")
-    //    {
-    //        listString.Remove("start");
-    //        listString.Remove("fin");
-    //        foreach (string point in listString)
-    //        {
-    //            adverseGrid.matrix[Convert.ToInt32(point[0])][Convert.ToInt32(point[1])].IsOccupied = true;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        Console.WriteLine("Les cellules occupée de l'adversaire non pas tout reçu");
-    //    }
-    //}
 
     public void GiveFeedbackToAdverser(string message)
     {
@@ -184,7 +133,8 @@ public class GameManagement
         {
             var state = "Touché";
             myGrid.matrix[p.X][p.Y].IsTouched = true;
-            myGrid.matrix[p.X][p.Y].CellType  = CellType.CELL_ISTOUCHED; ;
+            myGrid.matrix[p.X][p.Y].CellType = CellType.CELL_ISTOUCHED; ;
+            Console.WriteLine("CheckReceivedBlow");
             DisplayGrid.Display(myGrid);
 
             var releventShip = (from ship in gamer.Ships
@@ -194,7 +144,7 @@ public class GameManagement
             releventShip.LifePoint--;
             if (releventShip.LifePoint == 0)
             {
-                Console.WriteLine(releventShip.Name + "dont l'ID est" + releventShip.ID + "est coulé");
+                Console.WriteLine(releventShip.Name + "dont l'ID est : {" + releventShip.ID + "} est coulé");
                 state = "Coulé";
                 releventShip.ShipState = ShipState.ShipBlowed;
             }
@@ -206,40 +156,36 @@ public class GameManagement
             myGrid.matrix[p.X][p.Y].CellType = CellType.CELL_MISHIT;
 
             GiveFeedbackToAdverser("Raté!");
-          
+
         }
     }
 
     public void ReadReceivingMessageAndUpdateAdversairGrid()
     {
-        if (Communication.UdpDispo)
+        string message = Communication.ReceiveMessage();
+
+        if (message == "Touché")
         {
-            string message = Communication.UDPRecu;
-            if (message == "Touché")
-            {
-                adverseGrid.matrix[Blow.X][Blow.Y].IsTouched = true;
-                adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
-            }
-
-            if (message == "Raté")
-            {
-                adverseGrid.matrix[Blow.X][Blow.Y].IsMisHit = true;
-                adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_MISHIT;
-
-            }
-
-            if (message == "Coulé")
-            {
-                adverseGrid.matrix[Blow.X][Blow.Y].IsTouched = true;
-                adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
-
-                Console.WriteLine("Le Bateaux est coulé");
-
-            }
+            adverseGrid.matrix[Blow.X][Blow.Y].IsTouched = true;
+            adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
         }
 
-    }
+        if (message == "Raté")
+        {
+            adverseGrid.matrix[Blow.X][Blow.Y].IsMisHit = true;
+            adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_MISHIT;
 
+        }
+
+        if (message == "Coulé")
+        {
+            adverseGrid.matrix[Blow.X][Blow.Y].IsTouched = true;
+            adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
+
+            Console.WriteLine("Le Bateaux est coulé");
+
+        }
+    }
     /// <summary>
     /// Envoie les coups d'un joueur à un autre
     /// </summary>
@@ -258,9 +204,8 @@ public class GameManagement
     /// <param name="token">Indique si le joueur à le droit d'agir</param>
     public Point ReceivingBlow()
     {
-        while (!Communication.UdpDispo) ;
-        string message = Communication.UDPRecu;
-        Console.WriteLine("message = Communication.UDPRecu; {0}",message);
+
+        string message = Communication.ReceiveMessage();
         string[] msgSplited = message.Split(',');
 
         return new Point(Convert.ToInt32(msgSplited[0]), Convert.ToInt32(msgSplited[1]));

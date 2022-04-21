@@ -14,7 +14,7 @@ public class ShipPlacement
     public Grid grid;
     public Gamer.Gamer gamer;
 
-    static string  path = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())));
+    static string path = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())));
     public static List<ShipType> ShipTypes { get; set; } = JsonSerializer.Deserialize<List<ShipType>>(File.ReadAllText(path + "\\" + "typesBateaux.json"));
 
     /// <summary>
@@ -40,23 +40,23 @@ public class ShipPlacement
 
         //Console.WriteLine(" in shipplacement CellIsOccupied(int x, int y) , grid.matrix[2][5].IsOccupied: {0} ", grid.matrix[2][5].PointCoordinate);
 
-    return (from list in grid.matrix
+        return (from list in grid.matrix
                 from cell in list
                 where cell.PointCoordinate == new Point(x, y)
                 select cell).ToList().First().IsOccupied;
 
 
-/*
-        var a = (from list in grid.matrix
-                from cell in list
-                where cell.PointCoordinate == new Point(x, y)
-                select cell).ToList();
+        /*
+                var a = (from list in grid.matrix
+                        from cell in list
+                        where cell.PointCoordinate == new Point(x, y)
+                        select cell).ToList();
 
-        Console.WriteLine(" in shipplacement CellIsOccupied(int x, int y) : {0} ", a.Count());
+                Console.WriteLine(" in shipplacement CellIsOccupied(int x, int y) : {0} ", a.Count());
 
-  
-       return false;
-*/
+
+               return false;
+        */
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public class ShipPlacement
                 return false;
             }
 
-            for (int yi = y ; yi < y + size; yi++)
+            for (int yi = y; yi < y + size; yi++)
             {
                 if (CellIsOccupied(x, yi))
                 {
@@ -107,7 +107,7 @@ public class ShipPlacement
         }
         else
         {
-            if (!IsValidePointEntred((x + 1) - size , y))
+            if (!IsValidePointEntred((x + 1) - size, y))
             {
                 Console.WriteLine("Imposible de placer le bateuax sur cette directionnnn");
                 return false;
@@ -215,8 +215,6 @@ public class ShipPlacement
                     string[] msgSplited = Console.ReadLine().ToUpper().Split(',');
                     x = (int)Convert.ToChar(msgSplited[0][0]) - 'A';
                     y = (int)Convert.ToChar(msgSplited[1][0]) - '0';
-                    Console.WriteLine($"x : {x}  y : {y}");
-                    Console.WriteLine($"!IsValidePointEntred(x, y) : {!IsValidePointEntred(x, y)} ");
                     if (!IsValidePointEntred(x, y))
                     {
                         Console.WriteLine("Les coordonnées entrées sont invalide! \n \nTapez [n° de ligne],[n° de colomne] comme point du départ du bateaux");
@@ -250,7 +248,6 @@ public class ShipPlacement
             DisplayGrid.Display(grid);
 
         }
-        DisplayGrid.Display(grid);
         return gamer.Ships;
     }
 }
