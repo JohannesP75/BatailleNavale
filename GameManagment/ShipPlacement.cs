@@ -166,7 +166,7 @@ public class ShipPlacement
                 grid.matrix[StartPointCoordinate.X - i][StartPointCoordinate.Y].IsOccupied = true;
                 grid.matrix[StartPointCoordinate.X - i][StartPointCoordinate.Y].CellType = CellType.CELL_ISOCCUPIED;
 
-                ship.Position.Add(new Point(StartPointCoordinate.X - 1, StartPointCoordinate.Y));
+                ship.Position.Add(new Point(StartPointCoordinate.X - i, StartPointCoordinate.Y));
             }
         }
     }

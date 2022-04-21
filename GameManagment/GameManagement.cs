@@ -35,7 +35,7 @@ public class GameManagement
 
     public GameManagement()
     {
-        gamer = new Gamer("Joueur1", "192.168.1.60");
+        gamer = new Gamer("Joueur1", "192.168.1.135");
         myGrid = new Grid(10);
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
@@ -131,7 +131,7 @@ public class GameManagement
     {
         if (myGrid.matrix[p.X][p.Y].IsOccupied)
         {
-            var state = "Touché";
+            var state = "Touche";
             myGrid.matrix[p.X][p.Y].IsTouched = true;
             myGrid.matrix[p.X][p.Y].CellType = CellType.CELL_ISTOUCHED; ;
             Console.WriteLine("CheckReceivedBlow");
@@ -145,7 +145,7 @@ public class GameManagement
             if (releventShip.LifePoint == 0)
             {
                 Console.WriteLine(releventShip.Name + "dont l'ID est : {" + releventShip.ID + "} est coulé");
-                state = "Coulé";
+                state = "Coule";
                 releventShip.ShipState = ShipState.ShipBlowed;
             }
             GiveFeedbackToAdverser(state);
@@ -155,7 +155,7 @@ public class GameManagement
             myGrid.matrix[p.X][p.Y].IsMisHit = true;
             myGrid.matrix[p.X][p.Y].CellType = CellType.CELL_MISHIT;
 
-            GiveFeedbackToAdverser("Raté!");
+            GiveFeedbackToAdverser("Rate");
 
         }
     }
@@ -164,20 +164,20 @@ public class GameManagement
     {
         string message = Communication.ReceiveMessage();
 
-        if (message == "Touché")
+        if (message == "Touche")
         {
             adverseGrid.matrix[Blow.X][Blow.Y].IsTouched = true;
             adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
         }
 
-        if (message == "Raté")
+        if (message == "Rate")
         {
             adverseGrid.matrix[Blow.X][Blow.Y].IsMisHit = true;
             adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_MISHIT;
 
         }
 
-        if (message == "Coulé")
+        if (message == "Coule")
         {
             adverseGrid.matrix[Blow.X][Blow.Y].IsTouched = true;
             adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
