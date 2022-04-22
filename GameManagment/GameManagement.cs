@@ -27,12 +27,12 @@ public class GameManagement
     /// <summary>
     /// token est le jeton indiquant celui qui va commencer à jouer en premier lorsque si il est à True
     /// </summary>
-    public bool token { get; set; } = false;
+    public bool token { get; set; } = true;
 
 
-    public GameManagement()
+    public GameManagement(string ipAdversaite)
     {
-        gamer = new Gamer("Joueur1", "192.168.1.135");
+        gamer = new Gamer("Joueur1", ipAdversaite);
         myGrid = new Grid(10);
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
