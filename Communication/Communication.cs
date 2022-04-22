@@ -5,13 +5,21 @@ using System.Text;
 public class Communication
 {
     // This constructor arbitrarily assigns the local port number.
-    static UdpClient udpClient = new UdpClient(11000);
+    static UdpClient udpClient = new UdpClient(portCommunication);
     //IPEndPoint object will allow us to read datagrams sent from any source.
     static IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
     static ConsoleKeyInfo Clavier;
     public static bool UdpDispo = false; // cet indicateur informe de la présence d'un message reçu
                                          // que l'on doit annuler avant de pouvoir recevoir à nouveau
     public static string UDPRecu = "";
+    /// <summary>
+    /// Port utilisé
+    /// </summary>
+    public static int portCommunication { get; set; }
+    public Communication(int port=17000)
+    {
+        portCommunication = port;
+    }
     public struct UdpState
     {
         public UdpClient uClient;
@@ -104,7 +112,7 @@ public class Communication
     {
         try
         {
-            udpClient.Connect(IPAdversaire, 11000); // IP distant à renseigner 192.168.1.112
+            udpClient.Connect(IPAdversaire, 17000); // IP distant à renseigner 192.168.1.112
 
             // Sends a message to the host to which you have connected.
             Byte[] sendBytes = Encoding.ASCII.GetBytes(UnMessage ?? "nop");

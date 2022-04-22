@@ -64,10 +64,20 @@ class Program
     }
 }
 */
-
-GameManagement gridManagment = new GameManagement();
-
-gridManagment.InitGame();
-gridManagment.StartGame();
-
-
+class Program
+{
+    static void Main(string[] args)
+    {
+        int port = 17000;
+        string ip = "127.0.0.1";
+        
+        if (args.Length >= 2) {
+            ip = args[0];
+            if (!Int32.TryParse(args[1], out port)) port = 17000;
+        }
+        
+        GameManagement gridManagment = new GameManagement(ip, port);
+        gridManagment.InitGame();
+        gridManagment.StartGame();
+    }
+}

@@ -49,10 +49,10 @@ public class GameManagement
     /// <summary>
     /// Constructeur de la classe
     /// </summary>
-    public GameManagement()
+    public GameManagement(string ipAddress, int port)
     {
-        communication = new Communication();
-        gamer = new Gamer("Joueur1", "192.168.1.60");
+        communication = new Communication(port);
+        gamer = new Gamer("Joueur1", ipAddress);
         myGrid = new Grid(10);
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
@@ -86,7 +86,7 @@ public class GameManagement
 
     public void StartGame()
     {
-        var initToken = Communication.InitJeton(gamer.IPAddress);
+        /*var initToken = Communication.InitJeton(gamer.IPAddress);
         switch (initToken)
         {
             case 'A':
@@ -100,7 +100,7 @@ public class GameManagement
                 break;
 
 
-        }
+        }*/
 
         while (true)
         {
