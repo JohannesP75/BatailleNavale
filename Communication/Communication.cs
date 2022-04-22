@@ -38,4 +38,3 @@ public class Communication
         return returnData;
     }
 }
-

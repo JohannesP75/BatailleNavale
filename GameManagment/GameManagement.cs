@@ -270,10 +270,4 @@ public class GameManagement
 
         return new Point(Convert.ToInt32(msgSplited[0]), Convert.ToInt32(msgSplited[1]));
     }
-
 }
-
-
-
-
-
