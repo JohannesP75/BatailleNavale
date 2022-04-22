@@ -9,7 +9,6 @@ class DisplayGrid
 
     public static void Display(Grid Grid_)
     {
-        Console.Clear();
         Console.WriteLine();
         Console.WriteLine();
 

@@ -32,7 +32,7 @@ public class GameManagement
 
     public GameManagement()
     {
-        gamer = new Gamer("Joueur1", "192.168.1.135");
+        gamer = new Gamer("Joueur1", "192.168.1.130");
         myGrid = new Grid(10);
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
@@ -86,7 +86,7 @@ public class GameManagement
                 SendingBlow(Blow.X, Blow.Y);
 
                 ReadReceivingMessageAndUpdateAdversairGrid();
-
+                Console.Clear();
                 Console.WriteLine("Ma Grille");
                 DisplayGrid.Display(myGrid);
 
@@ -106,6 +106,7 @@ public class GameManagement
 
                 CheckReceivedBlow(reveivedBlowPoint);
 
+                Console.Clear();
 
                 Console.WriteLine("Ma Grille");
                 DisplayGrid.Display(myGrid);
