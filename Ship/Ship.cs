@@ -16,7 +16,7 @@ namespace BatailleNavale
         /// </summary>
         /// 
         public Point ShipStartPointCoordinate { get; set; }
-      
+
         /// <summary>
         /// Description des états des tableaux par un tableai dont l'index doit être EtatBateau
         /// </summary>
@@ -62,10 +62,10 @@ namespace BatailleNavale
 
         public List<Point> Position { get; set; }
 
-        public Ship(ShipType shipType,  Point StartPointCoordinate, bool horizontal=true)
+        public Ship(ShipType shipType, Point StartPointCoordinate, bool horizontal = true)
         {
             ID = ID_Max;
-         //   ID_Max++;  l'incrimentation est déja faite dans la boucle while du ShipPlacement
+            //   ID_Max++;  l'incrimentation est déja faite dans la boucle while du ShipPlacement
             Name = shipType.ModelName;
             Size = shipType.Size;
             LifePoint = shipType.Size;
@@ -74,29 +74,6 @@ namespace BatailleNavale
             Horizontal = horizontal;
             Position = new List<Point>();
         }
-
-        /* Julien */
- 
-
-        
-
-        /// <summary>
-        /// Indique que le navire à été touché 
-        /// </summary>
-        public void EstAttaque()
-        {
-            if (LifePoint > 0)
-            {
-                LifePoint--;
-
-                ShipState = (LifePoint > 0) ? ShipState.ShipTouched : ShipState.ShipBlowed;
-            }
-        }
-
-
-
-
-
 
     }
 }
