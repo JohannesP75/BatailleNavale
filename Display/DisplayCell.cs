@@ -1,7 +1,4 @@
-﻿
-using BatailleNavale;
-
-namespace BatailleNavale;
+﻿namespace BatailleNavale;
 
 class DisplayCell
 {
@@ -31,4 +28,3 @@ class DisplayCell
         Console.ResetColor();
     }
 }
-

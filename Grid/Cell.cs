@@ -89,27 +89,6 @@ public class Cell
         PointCoordinate = p;
         CellType = CellType.CELL_UNEXPLORED;
     }
-
-    /// <summary>
-    /// Met à jour l'état de la case
-    /// </summary>
-    public void CellState()
-    {
-        if (IsTouched & IsOccupied)
-        {
-            IsBlowed = true;
-            CellType = CellType.CELL_ISTOUCHED;
-        }
-        else if (IsTouched & !IsOccupied)
-        {
-            IsMisHit = true;
-            CellType = CellType.CELL_MISHIT;
-        }
-        else if (!IsTouched & IsOccupied)
-            CellType = CellType.CELL_ISOCCUPIED;
-    }
-
-
 }
 
 

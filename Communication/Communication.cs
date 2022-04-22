@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using System.Text;
 
-using BatailleNavale.GameManagment;
 public class Communication
 {
     public static readonly int PortStandard = 1000;
@@ -11,7 +10,6 @@ public class Communication
 
     public static bool SendMessage(string message, string address)
     {
-        bool S = true;
         try
         {
             udpClient.Connect(address, PortStandard);
@@ -23,10 +21,9 @@ public class Communication
         catch (Exception e)
         {
             Console.Error.WriteLine(e.ToString());
-            S = false;
+            return false;
         }
-
-        return S;
+        return true;
     }
 
     public static string ReceiveMessage()
