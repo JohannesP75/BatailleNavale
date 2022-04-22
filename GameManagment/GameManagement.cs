@@ -24,13 +24,13 @@ public class GameManagement
     /// <summary>
     /// Nombre de bateaux du joueur
     /// </summary>
-    public int ShipNumber = 1;
+    public int ShipNumber = 2;
     public Point Blow;
 
     /// <summary>
     /// token est le jeton indiquant celui qui va commencer à jouer en premier lorsque si il est à True
     /// </summary>
-    public bool token { get; set; } = true;
+    public bool token { get; set; } = false;
 
 
     public GameManagement()
@@ -63,9 +63,10 @@ public class GameManagement
 
     public void StartGame()
     {
-
+        
         while (true)
         {
+
             if (token)
             {
                 Console.WriteLine("Saissisez le cooordonnées du COUP que vous souhaitez effectué ");
@@ -92,11 +93,17 @@ public class GameManagement
 
                 ReadReceivingMessageAndUpdateAdversairGrid();
 
+      
+
                 Console.WriteLine("My Grid");
                 DisplayGrid.Display(myGrid);
 
                 Console.WriteLine("Adversaire Grid");
                 DisplayGrid.Display(adverseGrid);
+
+                if (SendGameState())
+                    break;
+
 
                 token = !token;
             }
@@ -108,12 +115,16 @@ public class GameManagement
 
                 CheckReceivedBlow(reveivedBlowPoint);
 
+        
+
                 Console.WriteLine("My Grid");
                 DisplayGrid.Display(myGrid);
 
                 Console.WriteLine("Adversaire Grid");
                 DisplayGrid.Display(adverseGrid);
 
+                if (ReadGameState())
+                    break;
 
                 token = !token;
 
@@ -122,11 +133,48 @@ public class GameManagement
 
     }
 
+    public bool IsGameFinished()
+    {
+
+        var LifePointSum = 0;
+        foreach (var ship in gamer.Ships)
+        {
+            LifePointSum += ship.LifePoint;
+        }
+
+        if (LifePointSum == 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     public void GiveFeedbackToAdverser(string message)
     {
         Communication.SendMessage(message, gamer.IPAddress);
     }
+
+    public bool SendGameState()
+    {
+        if (IsGameFinished())
+        {
+            
+            GiveFeedbackToAdverser("termine");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("la partie est terminé vous avez perdu!");
+            return true;
+        }
+        else
+        {
+            GiveFeedbackToAdverser("pas encore");
+            return false;
+        }
+    }
+        
+        
     public void CheckReceivedBlow(Point p)
     {
         if (myGrid.matrix[p.X][p.Y].IsOccupied)
@@ -144,10 +192,10 @@ public class GameManagement
             releventShip.LifePoint--;
             if (releventShip.LifePoint == 0)
             {
-                Console.WriteLine(releventShip.Name + "dont l'ID est : {" + releventShip.ID + "} est coulé");
                 state = "Coule";
                 releventShip.ShipState = ShipState.ShipBlowed;
             }
+
             GiveFeedbackToAdverser(state);
         }
         else
@@ -160,6 +208,22 @@ public class GameManagement
         }
     }
 
+    public bool ReadGameState()
+    {
+        string message = Communication.ReceiveMessage();
+
+
+        if (message == "termine")
+        {
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Le dernier bateaux de l'adversaire est coulé! Le jeu est terminé. ");
+            Console.WriteLine("Vous avez Gagné la partie!");
+            return true;
+        }
+        return false;
+    }
     public void ReadReceivingMessageAndUpdateAdversairGrid()
     {
         string message = Communication.ReceiveMessage();
@@ -181,10 +245,13 @@ public class GameManagement
         {
             adverseGrid.matrix[Blow.X][Blow.Y].IsTouched = true;
             adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
-
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine("Le Bateaux est coulé");
 
         }
+
+
     }
     /// <summary>
     /// Envoie les coups d'un joueur à un autre
