@@ -181,10 +181,12 @@ public class ShipPlacement
             //foreach (ShipType type in ShipTypes) Console.WriteLine($"{type.ModelName} (taille {type.Size})");
             for (int k = 0; k < ShipTypes.Count; k++)
             {
-                Console.WriteLine($"({k + 1}) {ShipTypes[k].ModelName} (taille {ShipTypes[k].Size})");
+                Console.WriteLine($"    ({k + 1}) {ShipTypes[k].ModelName} (taille {ShipTypes[k].Size})");
             }
 
             int navalType;
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine("Choisissez le type :");
 
             do
@@ -207,7 +209,7 @@ public class ShipPlacement
             bool direction = true;
             do
             {
-                Console.WriteLine("Tapez [n° de ligne],[n° de colomne] comme point du départ du bateaux");
+                Console.WriteLine("Tapez [la lettre de la ligne] , [n° de colomne] comme point du départ du bateau");
 
                 // Boucle sur le point de départ 
                 do
@@ -217,7 +219,7 @@ public class ShipPlacement
                     y = (int)Convert.ToChar(msgSplited[1][0]) - '0';
                     if (!IsValidePointEntred(x, y))
                     {
-                        Console.WriteLine("Les coordonnées entrées sont invalide! \n \nTapez [n° de ligne],[n° de colomne] comme point du départ du bateaux");
+                        Console.WriteLine("Les coordonnées entrées sont invalides! \n \nTapez [la lettre de la ligne],[n° de colomne] comme point du départ du bateau");
                     }
                 } while (!IsValidePointEntred(x, y));
 
@@ -245,6 +247,7 @@ public class ShipPlacement
 
             Console.WriteLine("Bateau {0} a été bien placé ", shipType.ModelName);
             SetOccupiedCellsAndShipPosition(ship, new Point(x, y), direction);
+            Console.WriteLine("Ma Grille");
             DisplayGrid.Display(grid);
 
         }

@@ -11,11 +11,8 @@ using BatailleNavale.GameManagment;
 public class GameManagement
 {
     public Gamer gamer;
-
     public Grid myGrid;
-
     public Grid adverseGrid;
-
     /// <summary>
     /// Place les navires
     /// </summary>
@@ -42,7 +39,6 @@ public class GameManagement
         Blow = new Point(-1, -1);
         DisplayGrid.Display(myGrid);
 
-
     }
 
     public void InitGame()
@@ -63,13 +59,12 @@ public class GameManagement
 
     public void StartGame()
     {
-        
+
         while (true)
         {
-
             if (token)
             {
-                Console.WriteLine("Saissisez le cooordonnées du COUP que vous souhaitez effectué ");
+                Console.WriteLine("Saissisez les coordonnées du COUP que vous souhaitez effectué ");
                 string[] entredBlow = Console.ReadLine().ToUpper().Split(',');
 
                 int entredBlowX = (int)Convert.ToChar(entredBlow[0][0]) - 'A';
@@ -90,20 +85,16 @@ public class GameManagement
 
                 SendingBlow(Blow.X, Blow.Y);
 
-
                 ReadReceivingMessageAndUpdateAdversairGrid();
 
-      
-
-                Console.WriteLine("My Grid");
+                Console.WriteLine("Ma Grille");
                 DisplayGrid.Display(myGrid);
 
-                Console.WriteLine("Adversaire Grid");
+                Console.WriteLine("Grille de l'adversaire");
                 DisplayGrid.Display(adverseGrid);
 
                 if (SendGameState())
                     break;
-
 
                 token = !token;
             }
@@ -115,12 +106,11 @@ public class GameManagement
 
                 CheckReceivedBlow(reveivedBlowPoint);
 
-        
 
-                Console.WriteLine("My Grid");
+                Console.WriteLine("Ma Grille");
                 DisplayGrid.Display(myGrid);
 
-                Console.WriteLine("Adversaire Grid");
+                Console.WriteLine("Grille de l'adversaire");
                 DisplayGrid.Display(adverseGrid);
 
                 if (ReadGameState())
@@ -159,12 +149,12 @@ public class GameManagement
     {
         if (IsGameFinished())
         {
-            
+
             GiveFeedbackToAdverser("termine");
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("la partie est terminé vous avez perdu!");
+            Console.WriteLine("la partie est terminée vous avez perdu!");
             return true;
         }
         else
@@ -173,8 +163,8 @@ public class GameManagement
             return false;
         }
     }
-        
-        
+
+
     public void CheckReceivedBlow(Point p)
     {
         if (myGrid.matrix[p.X][p.Y].IsOccupied)
@@ -183,6 +173,8 @@ public class GameManagement
             myGrid.matrix[p.X][p.Y].IsTouched = true;
             myGrid.matrix[p.X][p.Y].CellType = CellType.CELL_ISTOUCHED; ;
             Console.WriteLine("CheckReceivedBlow");
+
+            Console.WriteLine("Ma Grille");
             DisplayGrid.Display(myGrid);
 
             var releventShip = (from ship in gamer.Ships
@@ -217,9 +209,9 @@ public class GameManagement
         {
 
             Console.WriteLine();
+            Console.WriteLine("Le dernier bateau de l'adversaire est coulé! Le jeu est terminé. ");
             Console.WriteLine();
-            Console.WriteLine("Le dernier bateaux de l'adversaire est coulé! Le jeu est terminé. ");
-            Console.WriteLine("Vous avez Gagné la partie!");
+            Console.WriteLine("Vous avez gagné la partie!");
             return true;
         }
         return false;
@@ -247,7 +239,7 @@ public class GameManagement
             adverseGrid.matrix[Blow.X][Blow.Y].CellType = CellType.CELL_ISTOUCHED;
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("Le Bateaux est coulé");
+            Console.WriteLine("Le bateau est coulé");
 
         }
 
@@ -277,20 +269,6 @@ public class GameManagement
 
         return new Point(Convert.ToInt32(msgSplited[0]), Convert.ToInt32(msgSplited[1]));
     }
-
-    /// <summary>
-    /// Renvoie le contenu d'une cellule de coordonnées p
-    /// </summary>
-    /// <param name="p">Coordonnées de la céllule recherchée</param>
-    /// <returns>Valeur de la cellule recherchée</returns>
-    public Cell CellContent(Point p)
-    {
-        return (from list in myGrid.matrix
-                from cell in list
-                where cell.PointCoordinate == p
-                select cell).ToList().First();
-    }
-
 
 }
 
