@@ -32,7 +32,7 @@ public class GameManagement
 
     public GameManagement()
     {
-        gamer = new Gamer("Joueur1", "192.168.1.130");
+        gamer = new Gamer("Joueur1", "192.168.1.135");
         myGrid = new Grid(10);
         adverseGrid = new Grid(10);
         shipPlacement = new ShipPlacement(myGrid, gamer);
@@ -171,24 +171,29 @@ public class GameManagement
         if (myGrid.matrix[p.X][p.Y].IsOccupied)
         {
             var state = "Touche";
-            myGrid.matrix[p.X][p.Y].IsTouched = true;
-            myGrid.matrix[p.X][p.Y].CellType = CellType.CELL_ISTOUCHED; ;
-            Console.WriteLine("CheckReceivedBlow");
-
-            Console.WriteLine("Ma Grille");
-            DisplayGrid.Display(myGrid);
-
             var releventShip = (from ship in gamer.Ships
                                 from position in ship.Position
                                 where position == p
                                 select ship).ToList().First();
-            releventShip.LifePoint--;
+
+
+            if (releventShip.ShipState == ShipState.ShipTouched)
+            {
+                Console.WriteLine("Le bateaux a été déja touché dans cette position!");
+            }else
+            {
+                myGrid.matrix[p.X][p.Y].IsTouched = true;
+                myGrid.matrix[p.X][p.Y].CellType = CellType.CELL_ISTOUCHED; ;
+                releventShip.LifePoint--;
+            }
+
             if (releventShip.LifePoint == 0)
             {
                 state = "Coule";
                 releventShip.ShipState = ShipState.ShipBlowed;
             }
-
+            Console.WriteLine("Ma Grille");
+            DisplayGrid.Display(myGrid);
             GiveFeedbackToAdverser(state);
         }
         else

@@ -33,11 +33,8 @@ class DisplayGrid
             }
             Console.WriteLine();
         }
-
         Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine();
-
-
     }
 }

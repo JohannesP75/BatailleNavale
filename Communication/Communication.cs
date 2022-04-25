@@ -7,7 +7,6 @@ public class Communication
     public static readonly int PortStandard = 1000;
     static UdpClient udpClient = new UdpClient(PortStandard);
 
-
     public static bool SendMessage(string message, string address)
     {
         try
